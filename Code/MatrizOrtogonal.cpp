@@ -20,6 +20,9 @@ class MatrizOrtogonal{
         int alto;//y's
         int niveles;//#capas en z
         void borderExactly();
+        NodoOrtogonal<T>* capaActual;
+        NodoOrtogonal<T>* filaActual;
+        NodoOrtogonal<T>* nodoActual;
 
     public:        
         MatrizOrtogonal(int, int, int);//ancho, alto, #niveles        
@@ -28,7 +31,9 @@ class MatrizOrtogonal{
         MatrizOrtogonal<T>* crearMatriz2d();//add el asterisco, puesto que un objeto en realidad es un ptro        
         void crearMatriz3d();//no debe devolver nada puesto que este modificará directamente los atrib de esta clase...        
         void crearMatrizCompleta();
-        void shift(NodoOrtogonal<T>*, string);//nodo con contenido X [por el contexto del juego], string-> tipo pteo: izq, der, arr, aba, sal, ent        
+        void agregarContenido(T*);
+        NodoOrtogonal<T>* buscarNodo(T*);
+        NodoOrtogonal<T>* shift(NodoOrtogonal<T>*, string);//nodo con contenido X [por el contexto del juego], string-> tipo pteo: izq, der, arr, aba, sal, ent        
         void mostrarDatos();        
         void clean();
         
@@ -46,6 +51,11 @@ class MatrizOrtogonal{
         this-> niveles = levels;
 
         crearMatriz3d();
+
+        //con esto no habrá problema al momento de hacer set en el contenido
+        this-> capaActual = primerNodo;
+        this-> filaActual = capaActual;
+        this-> nodoActual = filaActual;
     }
 
     template <class T>
@@ -74,8 +84,8 @@ class MatrizOrtogonal{
 
                 do{
                     //se hace lo nec para establecer la 3er dimensión [de izq a der]
-                    actualPreviusNode->setNodoEntrante(actualLaterNode);//se setea z2
-                    actualLaterNode->setNodoSaliente(actualPreviusNode);//se setea z1
+                    actualPreviusNode->setNodoEntrante(actualLaterNode);//z2 [v]
+                    actualLaterNode->setNodoSaliente(actualPreviusNode);//z1 [^]
 
                     actualPreviusNode = actualPreviusNode->getSiguiente();
                     actualLaterNode = actualLaterNode->getSiguiente();
@@ -146,8 +156,8 @@ class MatrizOrtogonal{
                         previousRow = previousRow->getSiguiente();
                     }    
                     if(capasCreadas>0){
-                        previousNodeLayer->setNodoEntrante(actualNode);
-                        actualNode->setNodoSaliente(previousNodeLayer);
+                        previousNodeLayer->setNodoEntrante(actualNode);//z2 [v]
+                        actualNode->setNodoSaliente(previousNodeLayer);//z1 [^]
 
                         previousNodeLayer = previousNodeLayer->getSiguiente();
                     }
@@ -182,11 +192,162 @@ class MatrizOrtogonal{
         }while(capasCreadas < niveles);        
     }//NICE
 
+    template <class T>
+    void MatrizOrtogonal<T>::agregarContenido(T* contenido){
+        if(capaActual != null || filaActual != null || nodoActual != null){
+            this-> nodoActual->setContenido(contenido);//se establece el contenido
+            
+            nodoActual = nodoActual->getSiguiente();//se actualiza el nodo al que debe addse el contenido
+            if(nodoActual == null){//se acabaron las col
+                filaActual = filaActual->getAbajo();
+
+                if(filaActual != null){
+                    nodoActual = filaActual;                    
+                }else{//Se acabaron las filas
+                    capaActual = capaActual->getEntrante();
+                    if(capaActual != null){//aun hay capas
+                        filaActual = capaActual;
+                        nodoActual = filaActual;
+                    }//no pongo un else, puesto que no hay alguien más a quien buscar para que deje de ser null, media vez se hace null no hay nada más por hacer xD, porque este es el nodo determinante...
+                }
+            }
+        }
+    }
 
     template <class T>
-    void MatrizOrtogonal<T>::shift(NodoOrtogonal<T>* nodoFoco, string ubicacionSustituto){
+    NodoOrtogonal<T>* MatrizOrtogonal<T>::buscarNodo(T* criterioBusqueda){
+        int capaActual = 0;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
+        NodoOrtogonal<T>* layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
+        NodoOrtogonal<T>* row;
+        NodoOrtogonal<T>* node;//con este se accederá a las filas                        
+        
+        do{
+            row = layer;
+            node = row;
+            do{//para recorrer cada fila                            
+                do{//para recorrer cada columna
+                    if(node->getContenido() == criterioBusqueda){//según busqué, si se puede comaparar strings con ==...
+                        return node;
+                    }
+                    node = node->getSiguiente();
+                }while(node!=null);//podríamos colocar que se detenga cuando siguiente sea == null, así al salir se podrá imprimir la útlima fila con | al ini y al final xD
 
+                row = row->getAbajo();
+                node = row;
+            }while(row!=null);//con revisar uno basta por el hecho de tener =# de elementos
+            
+            layer = layer->getEntrante();//[v]            
+            capaActual++;
+        }while(capaActual<niveles);
     }
+
+    template <class T>
+    NodoOrtogonal<T>* MatrizOrtogonal<T>::shift(NodoOrtogonal<T>* nodoFoco, string ubicacionSustituto){//esta ubic es a la que se pasará el nodo vacío
+        NodoOrtogonal<T>* auxiliar = nodoFoco;
+        
+        switch (ubicacionSustituto){
+        case "izquierda":            
+            nodoFoco->setNodoSiguiente(nodoFoco->getAnterior());
+            nodoFoco->setNodoArriba(nodoFoco->getAnterior()->getArriba());//puede seguir usándose el getAnterior o emplear el getSiguiente, puesto que ya se actualizó...
+            nodoFoco->setNodoAbajo(nodoFoco->getAnterior()->getAbajo());
+            nodoFoco->setNodoSaliente(nodoFoco->getAnterior()->getSaliente());
+            nodoFoco->setNodoEntrante(nodoFoco->getAnterior()->getEntrante());      
+
+            //lo separo puesto que aquí es donde se pierde toda realción antigua xD, aunque en realidad no es nec, porque a partir del seteo del opuesto, puedo seguir obteniendo los datos, así como da a entener las notas de "puede seguir usándose..."
+            nodoFoco->setNodoAnterior(nodoFoco->getAnterior()->getAnterior());//puede seguir usándose el getAnterior o emplear el getSiguiente, puesto que ya se actualizó...
+
+            nodoFoco->getSiguiente()->setNodoSiguiente(auxiliar->getSiguiente());
+            nodoFoco->getSiguiente()->setNodoAnterior(nodoFoco);//debe ser este, pues ya tiene las referencias actuaalizadas a todos los punteros
+            nodoFoco->getSiguiente()->setNodoArriba(auxiliar->getArriba());
+            nodoFoco->getSiguiente()->setNodoAbajo(auxiliar->getAbajo());
+            nodoFoco->getSiguiente()->setNodoSaliente(auxiliar->getSaliente());
+            nodoFoco->getSiguiente()->setNodoEntrante(auxiliar->getEntrante());
+            break;
+        case "derecha":
+            nodoFoco->setNodoAnterior(nodoFoco->getSiguiente());
+            nodoFoco->setNodoArriba(nodoFoco->getSiguiente()->getArriba());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...
+            nodoFoco->setNodoAbajo(nodoFoco->getSiguiente()->getAbajo());
+            nodoFoco->setNodoSaliente(nodoFoco->getSiguiente()->getSaliente());
+            nodoFoco->setNodoEntrante(nodoFoco->getSiguiente()->getEntrante());           
+
+            nodoFoco->setNodoSiguiente(nodoFoco->getSiguiente()->getSiguiente());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...            
+
+            nodoFoco->getAnterior()->setNodoSiguiente(nodoFoco);
+            nodoFoco->getAnterior()->setNodoAnterior(auxiliar->getAnterior());
+            nodoFoco->getAnterior()->setNodoArriba(auxiliar->getArriba());
+            nodoFoco->getAnterior()->setNodoAbajo(auxiliar->getAbajo());
+            nodoFoco->getAnterior()->setNodoSaliente(auxiliar->getSaliente());
+            nodoFoco->getAnterior()->setNodoEntrante(auxiliar->getEntrante());
+            break;
+        case "arriba"://haz los equivalentes xD, luego haz el método de búsuqeda, pero antes revisa si está bien esto, apurébalo y si puedes simplificarlo, hazlo, después de eso tendrías que hacer los métodos del tablero, para los diferentes tipos de entrada de datos [aletorio, pasas todo a string y cuando sea 0 lo vuelves x, por entrada user, especificarás que el cout recibirá strings e idnicarás que el signo de vacío es una x, y el otro recibirás puros strings, ya tienes el signo de vacío, después de eso debes exe le método para buscar el vacío [con T busqueda = "X", ojo que puse comillas xD, luego creas la matriz, muestras los datos, y con eso pasas a imple el algoritmo para... ah no ese ya lo tengo iba a decir el shift xD, entonces lo pruebas, luego ves lo demás y al terminar todo lo codificable miras lo del algoritmo de resolución a base de lo que te responda el inge...]]
+            nodoFoco->setNodoAbajo(nodoFoco->getArriba());
+            nodoFoco->setNodoAnterior(nodoFoco->getArriba()->getAnterior);
+            nodoFoco->setNodoSiguiente(nodoFoco->getArriba()->getSiguiente());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...                        
+            nodoFoco->setNodoSaliente(nodoFoco->getArriba()->getSaliente());
+            nodoFoco->setNodoEntrante(nodoFoco->getArriba()->getEntrante());
+
+            nodoFoco->setNodoArriba(nodoFoco->getArriba()->getArriba());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...
+
+            nodoFoco->getAbajo()->setNodoSiguiente(auxiliar->getSiguiente());
+            nodoFoco->getAbajo()->setNodoAnterior(auxiliar->getAnterior());
+            nodoFoco->getAbajo()->setNodoArriba(nodoFoco);
+            nodoFoco->getAbajo()->setNodoAbajo(auxiliar->getAbajo());
+            nodoFoco->getAbajo()->setNodoSaliente(auxiliar->getSaliente());
+            nodoFoco->getAbajo()->setNodoEntrante(auxiliar->getEntrante());
+            break;
+        case "abajo":
+            nodoFoco->setNodoArriba(nodoFoco->getAbajo());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...            
+            nodoFoco->setNodoAnterior(nodoFoco->getAbajo()->getAnterior);
+            nodoFoco->setNodoSiguiente(nodoFoco->getAbajo()->getSiguiente());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...                        
+            nodoFoco->setNodoSaliente(nodoFoco->getAbajo()->getSaliente());
+            nodoFoco->setNodoEntrante(nodoFoco->getAbajo()->getEntrante());
+
+            nodoFoco->setNodoAbajo(nodoFoco->getAbajo()->getAbajo());
+
+            nodoFoco->getArriba()->setNodoSiguiente(auxiliar->getSiguiente());
+            nodoFoco->getArriba()->setNodoAnterior(auxiliar->getAnterior());
+            nodoFoco->getArriba()->setNodoArriba(auxiliar->getArriba());
+            nodoFoco->getArriba()->setNodoAbajo(nodoFoco);
+            nodoFoco->getArriba()->setNodoSaliente(auxiliar->getSaliente());
+            nodoFoco->getArriba()->setNodoEntrante(auxiliar->getEntrante());
+            break;
+        case "saliente"://z1
+            nodoFoco->setNodoEntrante(nodoFoco->getSaliente());
+            nodoFoco->setNodoAnterior(nodoFoco->getSaliente()->getAnterior);
+            nodoFoco->setNodoSiguiente(nodoFoco->getSaliente()->getSiguiente());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...                        
+            nodoFoco->setNodoArriba(nodoFoco->getSaliente()->getArriba);//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...            
+            nodoFoco->setNodoAbajo(nodoFoco->getSaliente()->getAbajo());
+
+            nodoFoco->setNodoSaliente(nodoFoco->getSaliente()->getSaliente());
+
+            nodoFoco->getEntrante()->setNodoSiguiente(auxiliar->getSiguiente());
+            nodoFoco->getEntrante()->setNodoAnterior(auxiliar->getAnterior());
+            nodoFoco->getEntrante()->setNodoArriba(auxiliar->getArriba());
+            nodoFoco->getEntrante()->setNodoAbajo(auxiliar->getAbajo());
+            nodoFoco->getEntrante()->setNodoSaliente(nodoFoco);
+            nodoFoco->getEntrante()->setNodoEntrante(auxiliar->getEntrante());            
+            break;
+        case "entrante"://z2
+            nodoFoco->setNodoSaliente(nodoFoco->getEntrante());            
+            nodoFoco->setNodoAnterior(nodoFoco->getEntrante()->getAnterior);
+            nodoFoco->setNodoSiguiente(nodoFoco->getEntrante()->getSiguiente());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...                        
+            nodoFoco->setNodoArriba(nodoFoco->getEntrante()->getArriba);//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...            
+            nodoFoco->setNodoAbajo(nodoFoco->getEntrante()->getAbajo());
+
+            nodoFoco->setNodoEntrante(nodoFoco->getEntrante()->getEntrante());
+
+            nodoFoco->getSaliente()->setNodoSiguiente(auxiliar->getSiguiente());
+            nodoFoco->getSaliente()->setNodoAnterior(auxiliar->getAnterior());
+            nodoFoco->getSaliente()->setNodoArriba(auxiliar->getArriba());
+            nodoFoco->getSaliente()->setNodoAbajo(auxiliar->getAbajo());
+            nodoFoco->getSaliente()->setNodoSaliente(auxiliar->getSaliente());
+            nodoFoco->getSaliente()->setNodoEntrante(nodoFoco); 
+            break;        
+        default://aunque en realidad de no ingresar un dato correcto el usuario, se solicitará que ingrese de nuevo xD, así que no hay pena xD            
+        }
+
+        return nodoFoco;//puesto que este es el nodo vacío con los puteros actualizados debido a los movimientos que se hizo... así no perderá la ref al nodo vacío, aunque ahora que lo pienso no es nec... :v xD
+    }//Listo xD, en caso no funcione, fue por una confusión no por la lógica xD
 
     template <class T>
     void MatrizOrtogonal<T>:: mostrarDatos(){        
@@ -223,8 +384,7 @@ class MatrizOrtogonal{
 
     template <class T>
     void MatrizOrtogonal<T>::borderExactly(){
-        for (int columnas = 0; columnas < ancho; columnas++)
-        {
+        for (int columnas = 0; columnas < ancho; columnas++){
             cout<<"......."
         }
         cout<<"\n";        
@@ -236,29 +396,19 @@ class MatrizOrtogonal{
     }
 
     template <class T>
-    int MatrizOrtogonal<T>::getAncho(){
-        return ancho;
-    }
+    int MatrizOrtogonal<T>::getAncho(){return ancho;}
 
     template <class T>
-    int MatrizOrtogonal<T>::getAlto(){
-        return alto;
-    }
+    int MatrizOrtogonal<T>::getAlto(){return alto;}
 
     template <class T>
-    int MatrizOrtogonal<T>::getNumeroNiveles(){
-        return niveles;
-    }
+    int MatrizOrtogonal<T>::getNumeroNiveles(){return niveles;}
     
     template <class T>
-    NodoOrtogonal<T>* MatrizOrtogonal<T>::getPrimerNodo(){
-        return primerNodo;
-    }
+    NodoOrtogonal<T>* MatrizOrtogonal<T>::getPrimerNodo(){return primerNodo;}
 
     template <class T>
-    NodoOrtogonal<T>* MatrizOrtogonal<T>::getUltimoNodo(){
-        return ultimoNodo;        
-    }
+    NodoOrtogonal<T>* MatrizOrtogonal<T>::getUltimoNodo(){return ultimoNodo;}
 #endif
 //Estaba pensando que después de crear cada mariz ortognonal con solo datos bidi, que se encarga de la dim 2D,
 //retorne la matriz, para que ya en otro for, se pueda hacer el establecimiento de lo que hace falta y así

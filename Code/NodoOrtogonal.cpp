@@ -16,12 +16,13 @@ class NodoOrtogonal {
         NodoOrtogonal<T>* y2;//aba
         NodoOrtogonal<T>* z1;//saliendo
         NodoOrtogonal<T>* z2;//entrando
-        T *contenido;
+        T* contenido;
 
     public://se declaran los prototipos de las funciones, métodos normales y cnstrcs xD        
         NodoOrtogonal();//para inicializar el primer nodo, de cada fila y creo que tb matriz...
         NodoOrtogonal(NodoOrtogonal<T>*);//x1        
         void setContenido(T*);        
+        void setNodoAnterior(NodoOrtogonal<T>*);//x1
         void setNodoSiguiente(NodoOrtogonal<T>*);//x2
         void setNodoArriba(NodoOrtogonal<T>*);//y1
         void setNodoAbajo(NodoOrtogonal<T>*);//y2
@@ -47,6 +48,16 @@ class NodoOrtogonal {
     {        
         x1 = anterior;
     }    
+
+    template <class T>
+    void NodoOrtogonal<T>::setContenido(T* content){
+        contenido = content;
+    }
+
+    template <class T>
+    void NodoOrtogonal<T>::setNodoAnterior(NodoOrtogonal<T> *nodoX1){
+        x1 = nodoX1;
+    }
 
     template <class T>
     void NodoOrtogonal<T>::setNodoSiguiente(NodoOrtogonal<T> *nodoX2){
