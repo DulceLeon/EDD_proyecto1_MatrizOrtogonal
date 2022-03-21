@@ -48,28 +48,21 @@ class MatrizOrtogonal{
     MatrizOrtogonal<T>::MatrizOrtogonal(int width, int height, int levels){
         this-> ancho = width;
         this-> alto = height;
-        this-> niveles = levels;
+        this-> niveles = levels;//cuando ya funcione, simplificaremos esto asignando justo después de la delcaración de los parám...
 
-        crearMatriz3d();
+        crearMatrizCompleta();//pero también podría invocarse a crearMatriz3d xD
 
         //con esto no habrá problema al momento de hacer set en el contenido
-        this-> capaActual = primerNodo;
-        this-> filaActual = capaActual;
-        this-> nodoActual = filaActual;
+        this->nodoActual = this->filaActual = this-> capaActual = primerNodo;//this-> capaActual = primerNodo; this-> filaActual = capaActual; this-> nodoActual = filaActual;
     }
 
     template <class T>
     void MatrizOrtogonal<T>::crearMatriz3d(){//recuerda, con estos métodos solo estás creando los nodos, a parte tendrás un método para add el contenido, a menos que cbes de opinión debido a favorecimiento
-        //nivel1
+        int capaActual = 1;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
         primerNodo = crearMatriz2d()->getPrimerNodo();
         NodoOrtogonal<T>* previousNode = primerNodo;//este nodo se utilizará para accedere a todo de la capa
-        NodoOrtogonal<T>* laterNode;
-        NodoOrtogonal<T>* actualPreviousRow;//con este se accederá a las filas
-        NodoOrtogonal<T>* actualLaterRow;
-        NodoOrtogonal<T>* actualPreviusNode;//con este se accderá a las columnas
-        NodoOrtogonal<T>* actualLaterNode;
-        
-        int capaActual = 1;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
+        NodoOrtogonal<T>* actualPreviousRow, actualPreviusNode;//con este se accderá a las columnas
+        NodoOrtogonal<T>* laterNode, actualLaterRow, actualLaterNode;
 
         while(capaActual<niveles)
         {
@@ -89,11 +82,11 @@ class MatrizOrtogonal{
 
                     actualPreviusNode = actualPreviusNode->getSiguiente();
                     actualLaterNode = actualLaterNode->getSiguiente();
-                }while(actualPreviusNode!=null);
+                }while(actualPreviusNode!=NULL);
 
                 actualPreviousRow = nodoFilaActual->getAbajo();//para así ir a la siguiente fila...
                 actualLaterRow = nodoFilaActual->getAbajo();//para así ir a la siguiente fila...
-            }while(actualPreviousRow!=null);//con revisar uno basta por el hecho de tener =# de elementos
+            }while(actualPreviousRow!=NULL);//con revisar uno basta por el hecho de tener =# de elementos
 
             previousNode = laterNode;//para obtener el primer nodo de la siguiente capa y así repetir el ciclo con él
             capaActual++;
@@ -103,17 +96,16 @@ class MatrizOrtogonal{
     template <class T>
     MatrizOrtogonal<T>* MatrizOrtogonal<T>::crearMatriz2d(){
         int filasCreadas = 0;
-        NodoOrtogonal<T>* actualRow;
-        NodoOrtogonal<T>* previousRow = null;
-        NodoOrtogonal<T>* actualNode;        
+        NodoOrtogonal<T>* actualRow, actualNode;        
+        NodoOrtogonal<T>* previousRow = NULL;        
 
         do{//pues al menos habrán 2 filas
-            actualRow = new NodoOrtogonal();//aquí se crea la primer columna
+            actualRow = new NodoOrtogonal<T>();//aquí se crea la primer columna
             actualNode = actualRow;
 
             for (int columnaActual = 0; columnaActual < ancho; columnaActual++)
             {
-                if(previousRow != null){//nec que se exe == #cols [ancho]; otra forma de poner la condi es filasCreadas >0
+                if(previousRow != NULL){//nec que se exe == #cols [ancho]; otra forma de poner la condi es filasCreadas >0
                     previousRow->setNodoAbajo(actualNode);
                     actualNode->setNodoArriba(previousRow);
 
@@ -121,7 +113,7 @@ class MatrizOrtogonal{
                 }    
 
                 if(columnaActual < (ancho-1)){//pues se deben crear las c-1 cols restantes
-                    NodoOrtogonal<T>* siguiente = new NodoOrtogonal(actualNode);//se cre el sig, se setea el ant del sig
+                    NodoOrtogonal<T>* siguiente = new NodoOrtogonal<T>(actualNode);//se cre el sig, se setea el ant del sig
                     actualNode->setNodoSiguiente(siguiente);                
 
                     actualNode = actualNode->getSiguiente();
@@ -136,20 +128,18 @@ class MatrizOrtogonal{
     template <class T>
     void MatrizOrtogonal<T>::crearMatrizCompleta(){
         int capasCreadas = 0;
-        primerNodo = new NodoOrtogonal();
+        primerNodo = new NodoOrtogonal<T>();
         NodoOrtogonal<T>* actualLayer = primerNodo;        
-        NodoOrtogonal<T>* previousLayer = null;
-        NodoOrtogonal<T>* previousRowLayer = null;
-        NodoOrtogonal<T>* previousNodeLayer = null;
+        NodoOrtogonal<T>* previousLayer, previousRowLayer, previousNodeLayer;
         int filasCreadas = 0;
         NodoOrtogonal<T>* actualRow = actualLayer;
         NodoOrtogonal<T>* actualNode = actualRow;       
-        NodoOrtogonal<T>* previousRow = null;//no se nece tener un previousNOde, puesto que este se actualiza con los datos de la fila que era la actual xD, entonces no hay probllema porque al tener que insertar cols a una nueva columna, este estará en el inicio xD porque esa fila actual siempre se quedó apuntando al primero de sus nodos uwu xD, de todos modos ahí le echas otra revisadita xD xD         
+        NodoOrtogonal<T>* previousRow = NULL;//no se nece tener un previousNOde, puesto que este se actualiza con los datos de la fila que era la actual xD, entonces no hay probllema porque al tener que insertar cols a una nueva columna, este estará en el inicio xD porque esa fila actual siempre se quedó apuntando al primero de sus nodos uwu xD, de todos modos ahí le echas otra revisadita xD xD         
 
         do{//do porque al menos habrá una capa
             do{//es un do pues al menos habrán 2 filas        
                 for (int columnaActual = 0; columnaActual < ancho; columnaActual++){
-                    if(previousRow != null){//nec que se exe == #cols [ancho]; otra forma de poner la condi es filasCreadas >0
+                    if(previousRow != NULL){//nec que se exe == #cols [ancho]; otra forma de poner la condi es filasCreadas >0
                         previousRow->setNodoAbajo(actualNode);
                         actualNode->setNodoArriba(previousRow);
 
@@ -163,52 +153,48 @@ class MatrizOrtogonal{
                     }
 
                     if(columnaActual < (ancho-1)){//pues se deben crear las c-1 cols restantes
-                        NodoOrtogonal<T>* siguiente = new NodoOrtogonal(actualNode);//se cre el sig, se setea el ant del sig
+                        NodoOrtogonal<T>* siguiente = new NodoOrtogonal<T>(actualNode);//se cre el sig, se setea el ant del sig
                         actualNode->setNodoSiguiente(siguiente);                
 
                         actualNode = actualNode->getSiguiente();
                     }                
-                }            
-
+                }           
                 if(capasCreadas>0){
                     previousRowLayer = previousRowLayer->getAbajo();
                     previousNodeLayer = previousRowLayer;
                 }                   
 
                 previousRow = actualRow;
-                actualRow = new NodoOrtogonal();//aquí se crea la primer columna
+                actualRow = new NodoOrtogonal<T>();//aquí se crea la primer columna
                 actualNode = actualRow;
                 filasCreadas++;
             }while(filasCreadas < alto);
 
-            previousLayer = actualLayer;
-            previousRowLayer = previousLayer;            
-            previousNodeLayer = previousRowLayer;
+            previousNodeLayer = previousRowLayer = previousLayer = actualLayer;//previousLayer = actualLayer; previousRowLayer = previousLayer;  previousNodeLayer = previousRowLayer;
             capasCreadas++;
 
-            actualLayer = new NodoOrtogonal();
-            actualRow = actualLayer;
-            actualNode = actualRow;
+            actualLayer = new NodoOrtogonal<T>();
+            actualNode = actualRow = actualLayer;//actualNode = actualRow;
         }while(capasCreadas < niveles);        
     }//NICE
 
     template <class T>
     void MatrizOrtogonal<T>::agregarContenido(T* contenido){
-        if(capaActual != null || filaActual != null || nodoActual != null){
-            this-> nodoActual->setContenido(contenido);//se establece el contenido
-            
+        if(capaActual != NULL || filaActual != NULL || nodoActual != NULL){
+            this-> nodoActual->setContenido(contenido);//se establece el contenido            
             nodoActual = nodoActual->getSiguiente();//se actualiza el nodo al que debe addse el contenido
-            if(nodoActual == null){//se acabaron las col
+
+            if(nodoActual == NULL){//se acabaron las col
                 filaActual = filaActual->getAbajo();
 
-                if(filaActual != null){
+                if(filaActual != NULL){
                     nodoActual = filaActual;                    
                 }else{//Se acabaron las filas
                     capaActual = capaActual->getEntrante();
-                    if(capaActual != null){//aun hay capas
+                    if(capaActual != NULL){//aun hay capas
                         filaActual = capaActual;
                         nodoActual = filaActual;
-                    }//no pongo un else, puesto que no hay alguien más a quien buscar para que deje de ser null, media vez se hace null no hay nada más por hacer xD, porque este es el nodo determinante...
+                    }//no pongo un else, puesto que no hay alguien más a quien buscar para que deje de ser NULL, media vez se hace NULL no hay nada más por hacer xD, porque este es el nodo determinante...
                 }
             }
         }
@@ -218,23 +204,21 @@ class MatrizOrtogonal{
     NodoOrtogonal<T>* MatrizOrtogonal<T>::buscarNodo(T* criterioBusqueda){
         int capaActual = 0;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
         NodoOrtogonal<T>* layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
-        NodoOrtogonal<T>* row;
-        NodoOrtogonal<T>* node;//con este se accederá a las filas                        
+        NodoOrtogonal<T>* row, node;//con este se accederá a las filas                        
         
         do{
-            row = layer;
-            node = row;
+            node = row = layer;//row = layer; node = row;            
             do{//para recorrer cada fila                            
                 do{//para recorrer cada columna
                     if(node->getContenido() == criterioBusqueda){//según busqué, si se puede comaparar strings con ==...
                         return node;
                     }
                     node = node->getSiguiente();
-                }while(node!=null);//podríamos colocar que se detenga cuando siguiente sea == null, así al salir se podrá imprimir la útlima fila con | al ini y al final xD
+                }while(node!=NULL);//podríamos colocar que se detenga cuando siguiente sea == NULL, así al salir se podrá imprimir la útlima fila con | al ini y al final xD
 
                 row = row->getAbajo();
                 node = row;
-            }while(row!=null);//con revisar uno basta por el hecho de tener =# de elementos
+            }while(row!=NULL);//con revisar uno basta por el hecho de tener =# de elementos
             
             layer = layer->getEntrante();//[v]            
             capaActual++;
@@ -353,27 +337,23 @@ class MatrizOrtogonal{
     void MatrizOrtogonal<T>:: mostrarDatos(){        
         int capaActual = 0;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
         NodoOrtogonal<T>* layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
-        NodoOrtogonal<T>* row ;
-        NodoOrtogonal<T>* node;//con este se accederá a las filas                        
+        NodoOrtogonal<T>* row, node;//con este se accederá a las filas                        
         
         do{
-            row = layer;
-            node = row;
+            node = row = layer;//row = layer; node = row;
             cout<<"Nivel "<<(capaActual+1)<<"\n";
             borderExactly();
-
             do{//para recorrer cada fila            
                 borderExactly();
-                do{
-                    //se hace lo nec para establecer la 3er dimensión [de izq a der]                    
+                do{                   
                     cout<<"|  "<<node->getContenido();
                     node = node->getSiguiente();
-                }while(node!=null);//podríamos colocar que se detenga cuando siguiente sea == null, así al salir se podrá imprimir la útlima fila con | al ini y al final xD
+                }while(node!=NULL);//podríamos colocar que se detenga cuando siguiente sea == NULL, así al salir se podrá imprimir la útlima fila con | al ini y al final xD
 
                 borderExactly();
                 row = row->getAbajo();
                 node = row;
-            }while(row!=null);//con revisar uno basta por el hecho de tener =# de elementos
+            }while(row!=NULL);//con revisar uno basta por el hecho de tener =# de elementos
             
             borderExactly();
             cout<<"\n";
@@ -397,16 +377,12 @@ class MatrizOrtogonal{
 
     template <class T>
     int MatrizOrtogonal<T>::getAncho(){return ancho;}
-
     template <class T>
     int MatrizOrtogonal<T>::getAlto(){return alto;}
-
     template <class T>
-    int MatrizOrtogonal<T>::getNumeroNiveles(){return niveles;}
-    
+    int MatrizOrtogonal<T>::getNumeroNiveles(){return niveles;}    
     template <class T>
     NodoOrtogonal<T>* MatrizOrtogonal<T>::getPrimerNodo(){return primerNodo;}
-
     template <class T>
     NodoOrtogonal<T>* MatrizOrtogonal<T>::getUltimoNodo(){return ultimoNodo;}
 #endif
