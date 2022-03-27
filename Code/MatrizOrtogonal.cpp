@@ -26,14 +26,12 @@ class MatrizOrtogonal{
 
     public:        
         MatrizOrtogonal(int, int, int);//ancho, alto, #niveles        
-        ~MatrizOrtogonal();
-
         MatrizOrtogonal<T>* crearMatriz2d();//add el asterisco, puesto que un objeto en realidad es un ptro        
         void crearMatriz3d();//no debe devolver nada puesto que este modificará directamente los atrib de esta clase...        
         void crearMatrizCompleta();
         void agregarContenido(T*);
         NodoOrtogonal<T>* buscarNodo(T*);
-        NodoOrtogonal<T>* shift(NodoOrtogonal<T>*, string);//nodo con contenido X [por el contexto del juego], string-> tipo pteo: izq, der, arr, aba, sal, ent        
+        NodoOrtogonal<T>* shift(NodoOrtogonal<T>*, int);//nodo con contenido X [por el contexto del juego], string-> tipo pteo: izq, der, arr, aba, sal, ent        
         void mostrarDatos();        
         void clean();
         
@@ -42,6 +40,8 @@ class MatrizOrtogonal{
         int getNumeroNiveles();
         NodoOrtogonal<T>* getPrimerNodo();
         NodoOrtogonal<T>* getUltimoNodo();
+
+        ~MatrizOrtogonal();
 };
 
     template <class T>
@@ -49,9 +49,7 @@ class MatrizOrtogonal{
         this-> ancho = width;
         this-> alto = height;
         this-> niveles = levels;//cuando ya funcione, simplificaremos esto asignando justo después de la delcaración de los parám...
-
         crearMatrizCompleta();//pero también podría invocarse a crearMatriz3d xD
-
         //con esto no habrá problema al momento de hacer set en el contenido
         this->nodoActual = this->filaActual = this-> capaActual = primerNodo;//this-> capaActual = primerNodo; this-> filaActual = capaActual; this-> nodoActual = filaActual;
     }
@@ -60,9 +58,9 @@ class MatrizOrtogonal{
     void MatrizOrtogonal<T>::crearMatriz3d(){//recuerda, con estos métodos solo estás creando los nodos, a parte tendrás un método para add el contenido, a menos que cbes de opinión debido a favorecimiento
         int capaActual = 1;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
         primerNodo = crearMatriz2d()->getPrimerNodo();
-        NodoOrtogonal<T>* previousNode = primerNodo;//este nodo se utilizará para accedere a todo de la capa
-        NodoOrtogonal<T>* actualPreviousRow, actualPreviusNode;//con este se accderá a las columnas
-        NodoOrtogonal<T>* laterNode, actualLaterRow, actualLaterNode;
+        NodoOrtogonal<T> *previousNode = primerNodo;//este nodo se utilizará para accedere a todo de la capa
+        NodoOrtogonal<T> *actualPreviousRow, *actualPreviusNode;//con este se accderá a las columnas
+        NodoOrtogonal<T> *laterNode, *actualLaterRow, *actualLaterNode;
 
         while(capaActual<niveles)
         {
@@ -84,8 +82,8 @@ class MatrizOrtogonal{
                     actualLaterNode = actualLaterNode->getSiguiente();
                 }while(actualPreviusNode!=NULL);
 
-                actualPreviousRow = nodoFilaActual->getAbajo();//para así ir a la siguiente fila...
-                actualLaterRow = nodoFilaActual->getAbajo();//para así ir a la siguiente fila...
+                actualPreviousRow = actualPreviousRow->getAbajo();//para así ir a la siguiente fila...
+                actualLaterRow = actualLaterRow->getAbajo();//para así ir a la siguiente fila...
             }while(actualPreviousRow!=NULL);//con revisar uno basta por el hecho de tener =# de elementos
 
             previousNode = laterNode;//para obtener el primer nodo de la siguiente capa y así repetir el ciclo con él
@@ -96,8 +94,8 @@ class MatrizOrtogonal{
     template <class T>
     MatrizOrtogonal<T>* MatrizOrtogonal<T>::crearMatriz2d(){
         int filasCreadas = 0;
-        NodoOrtogonal<T>* actualRow, actualNode;        
-        NodoOrtogonal<T>* previousRow = NULL;        
+        NodoOrtogonal<T> *actualRow, *actualNode;        
+        NodoOrtogonal<T> *previousRow = NULL;        
 
         do{//pues al menos habrán 2 filas
             actualRow = new NodoOrtogonal<T>();//aquí se crea la primer columna
@@ -129,12 +127,12 @@ class MatrizOrtogonal{
     void MatrizOrtogonal<T>::crearMatrizCompleta(){
         int capasCreadas = 0;
         primerNodo = new NodoOrtogonal<T>();
-        NodoOrtogonal<T>* actualLayer = primerNodo;        
-        NodoOrtogonal<T>* previousLayer, previousRowLayer, previousNodeLayer;
+        NodoOrtogonal<T> *actualLayer = primerNodo;        
+        NodoOrtogonal<T> *previousLayer, *previousRowLayer, *previousNodeLayer;
         int filasCreadas = 0;
-        NodoOrtogonal<T>* actualRow = actualLayer;
-        NodoOrtogonal<T>* actualNode = actualRow;       
-        NodoOrtogonal<T>* previousRow = NULL;//no se nece tener un previousNOde, puesto que este se actualiza con los datos de la fila que era la actual xD, entonces no hay probllema porque al tener que insertar cols a una nueva columna, este estará en el inicio xD porque esa fila actual siempre se quedó apuntando al primero de sus nodos uwu xD, de todos modos ahí le echas otra revisadita xD xD         
+        NodoOrtogonal<T> *actualRow = actualLayer;
+        NodoOrtogonal<T> *actualNode = actualRow;       
+        NodoOrtogonal<T> *previousRow = NULL;//no se nece tener un previousNOde, puesto que este se actualiza con los datos de la fila que era la actual xD, entonces no hay probllema porque al tener que insertar cols a una nueva columna, este estará en el inicio xD porque esa fila actual siempre se quedó apuntando al primero de sus nodos uwu xD, de todos modos ahí le echas otra revisadita xD xD         
 
         do{//do porque al menos habrá una capa
             do{//es un do pues al menos habrán 2 filas        
@@ -179,8 +177,8 @@ class MatrizOrtogonal{
     }//NICE
 
     template <class T>
-    void MatrizOrtogonal<T>::agregarContenido(T* contenido){
-        if(capaActual != NULL || filaActual != NULL || nodoActual != NULL){
+    void MatrizOrtogonal<T>::agregarContenido(T *contenido){
+        if(capaActual != NULL || filaActual != NULL || nodoActual != NULL){//yo diría que con la condición que capa != null es más que suficiente...
             this-> nodoActual->setContenido(contenido);//se establece el contenido            
             nodoActual = nodoActual->getSiguiente();//se actualiza el nodo al que debe addse el contenido
 
@@ -198,19 +196,20 @@ class MatrizOrtogonal{
                 }
             }
         }
-    }
+    }//cuando todos lleguen a null quiere decir que está llena, entonces no tendrían por qué hacer que dejen de ser null...
 
     template <class T>
     NodoOrtogonal<T>* MatrizOrtogonal<T>::buscarNodo(T* criterioBusqueda){
         int capaActual = 0;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
-        NodoOrtogonal<T>* layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
-        NodoOrtogonal<T>* row, node;//con este se accederá a las filas                        
+        NodoOrtogonal<T> *layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
+        NodoOrtogonal<T> *row, *node;//con este se accederá a las filas                        
         
         do{
             node = row = layer;//row = layer; node = row;            
             do{//para recorrer cada fila                            
                 do{//para recorrer cada columna
-                    if(node->getContenido() == criterioBusqueda){//según busqué, si se puede comaparar strings con ==...
+                    if(node->getContenido() == criterioBusqueda){//yo pensaría que aquí no se comparan las direcciones...
+                        cout<<"compracion [busqueda nodo]: contenido nodo-> "<<node->getContenido()<<"criterio búsqueda-> "<<criterioBusqueda;
                         return node;
                     }
                     node = node->getSiguiente();
@@ -223,14 +222,16 @@ class MatrizOrtogonal{
             layer = layer->getEntrante();//[v]            
             capaActual++;
         }while(capaActual<niveles);
+
+        return NULL;//si es que no encuentra algo
     }
 
     template <class T>
-    NodoOrtogonal<T>* MatrizOrtogonal<T>::shift(NodoOrtogonal<T>* nodoFoco, string ubicacionSustituto){//esta ubic es a la que se pasará el nodo vacío
-        NodoOrtogonal<T>* auxiliar = nodoFoco;
+    NodoOrtogonal<T>* MatrizOrtogonal<T>::shift(NodoOrtogonal<T> *nodoFoco, int ubicacionSustituto){//esta ubic es a la que se pasará el nodo vacío
+        NodoOrtogonal<T> *auxiliar = nodoFoco;
         
         switch (ubicacionSustituto){
-        case "izquierda":            
+        case 0://izq: x1      
             nodoFoco->setNodoSiguiente(nodoFoco->getAnterior());
             nodoFoco->setNodoArriba(nodoFoco->getAnterior()->getArriba());//puede seguir usándose el getAnterior o emplear el getSiguiente, puesto que ya se actualizó...
             nodoFoco->setNodoAbajo(nodoFoco->getAnterior()->getAbajo());
@@ -247,7 +248,7 @@ class MatrizOrtogonal{
             nodoFoco->getSiguiente()->setNodoSaliente(auxiliar->getSaliente());
             nodoFoco->getSiguiente()->setNodoEntrante(auxiliar->getEntrante());
             break;
-        case "derecha":
+        case 1://Der: x2
             nodoFoco->setNodoAnterior(nodoFoco->getSiguiente());
             nodoFoco->setNodoArriba(nodoFoco->getSiguiente()->getArriba());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...
             nodoFoco->setNodoAbajo(nodoFoco->getSiguiente()->getAbajo());
@@ -263,9 +264,9 @@ class MatrizOrtogonal{
             nodoFoco->getAnterior()->setNodoSaliente(auxiliar->getSaliente());
             nodoFoco->getAnterior()->setNodoEntrante(auxiliar->getEntrante());
             break;
-        case "arriba"://haz los equivalentes xD, luego haz el método de búsuqeda, pero antes revisa si está bien esto, apurébalo y si puedes simplificarlo, hazlo, después de eso tendrías que hacer los métodos del tablero, para los diferentes tipos de entrada de datos [aletorio, pasas todo a string y cuando sea 0 lo vuelves x, por entrada user, especificarás que el cout recibirá strings e idnicarás que el signo de vacío es una x, y el otro recibirás puros strings, ya tienes el signo de vacío, después de eso debes exe le método para buscar el vacío [con T busqueda = "X", ojo que puse comillas xD, luego creas la matriz, muestras los datos, y con eso pasas a imple el algoritmo para... ah no ese ya lo tengo iba a decir el shift xD, entonces lo pruebas, luego ves lo demás y al terminar todo lo codificable miras lo del algoritmo de resolución a base de lo que te responda el inge...]]
+        case 2://haz los equivalentes xD, luego haz el método de búsuqeda, pero antes revisa si está bien esto, apurébalo y si puedes simplificarlo, hazlo, después de eso tendrías que hacer los métodos del tablero, para los diferentes tipos de entrada de datos [aletorio, pasas todo a string y cuando sea 0 lo vuelves x, por entrada user, especificarás que el cout recibirá strings e idnicarás que el signo de vacío es una x, y el otro recibirás puros strings, ya tienes el signo de vacío, después de eso debes exe le método para buscar el vacío [con T busqueda = "X", ojo que puse comillas xD, luego creas la matriz, muestras los datos, y con eso pasas a imple el algoritmo para... ah no ese ya lo tengo iba a decir el shift xD, entonces lo pruebas, luego ves lo demás y al terminar todo lo codificable miras lo del algoritmo de resolución a base de lo que te responda el inge...]]
             nodoFoco->setNodoAbajo(nodoFoco->getArriba());
-            nodoFoco->setNodoAnterior(nodoFoco->getArriba()->getAnterior);
+            nodoFoco->setNodoAnterior(nodoFoco->getArriba()->getAnterior());
             nodoFoco->setNodoSiguiente(nodoFoco->getArriba()->getSiguiente());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...                        
             nodoFoco->setNodoSaliente(nodoFoco->getArriba()->getSaliente());
             nodoFoco->setNodoEntrante(nodoFoco->getArriba()->getEntrante());
@@ -279,9 +280,9 @@ class MatrizOrtogonal{
             nodoFoco->getAbajo()->setNodoSaliente(auxiliar->getSaliente());
             nodoFoco->getAbajo()->setNodoEntrante(auxiliar->getEntrante());
             break;
-        case "abajo":
+        case 3://abajo: y2
             nodoFoco->setNodoArriba(nodoFoco->getAbajo());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...            
-            nodoFoco->setNodoAnterior(nodoFoco->getAbajo()->getAnterior);
+            nodoFoco->setNodoAnterior(nodoFoco->getAbajo()->getAnterior());
             nodoFoco->setNodoSiguiente(nodoFoco->getAbajo()->getSiguiente());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...                        
             nodoFoco->setNodoSaliente(nodoFoco->getAbajo()->getSaliente());
             nodoFoco->setNodoEntrante(nodoFoco->getAbajo()->getEntrante());
@@ -295,11 +296,11 @@ class MatrizOrtogonal{
             nodoFoco->getArriba()->setNodoSaliente(auxiliar->getSaliente());
             nodoFoco->getArriba()->setNodoEntrante(auxiliar->getEntrante());
             break;
-        case "saliente"://z1
+        case 4://saliente: z1
             nodoFoco->setNodoEntrante(nodoFoco->getSaliente());
-            nodoFoco->setNodoAnterior(nodoFoco->getSaliente()->getAnterior);
+            nodoFoco->setNodoAnterior(nodoFoco->getSaliente()->getAnterior());
             nodoFoco->setNodoSiguiente(nodoFoco->getSaliente()->getSiguiente());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...                        
-            nodoFoco->setNodoArriba(nodoFoco->getSaliente()->getArriba);//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...            
+            nodoFoco->setNodoArriba(nodoFoco->getSaliente()->getArriba());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...            
             nodoFoco->setNodoAbajo(nodoFoco->getSaliente()->getAbajo());
 
             nodoFoco->setNodoSaliente(nodoFoco->getSaliente()->getSaliente());
@@ -311,11 +312,11 @@ class MatrizOrtogonal{
             nodoFoco->getEntrante()->setNodoSaliente(nodoFoco);
             nodoFoco->getEntrante()->setNodoEntrante(auxiliar->getEntrante());            
             break;
-        case "entrante"://z2
+        case 5://entrante: z2
             nodoFoco->setNodoSaliente(nodoFoco->getEntrante());            
-            nodoFoco->setNodoAnterior(nodoFoco->getEntrante()->getAnterior);
+            nodoFoco->setNodoAnterior(nodoFoco->getEntrante()->getAnterior());
             nodoFoco->setNodoSiguiente(nodoFoco->getEntrante()->getSiguiente());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...                        
-            nodoFoco->setNodoArriba(nodoFoco->getEntrante()->getArriba);//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...            
+            nodoFoco->setNodoArriba(nodoFoco->getEntrante()->getArriba());//puede seguir usándose el getSig o emplear el getAnt, puesto que ya se actualizó...            
             nodoFoco->setNodoAbajo(nodoFoco->getEntrante()->getAbajo());
 
             nodoFoco->setNodoEntrante(nodoFoco->getEntrante()->getEntrante());
@@ -328,6 +329,8 @@ class MatrizOrtogonal{
             nodoFoco->getSaliente()->setNodoEntrante(nodoFoco); 
             break;        
         default://aunque en realidad de no ingresar un dato correcto el usuario, se solicitará que ingrese de nuevo xD, así que no hay pena xD            
+            cout<<"direccion inexistente";
+            break;
         }
 
         return nodoFoco;//puesto que este es el nodo vacío con los puteros actualizados debido a los movimientos que se hizo... así no perderá la ref al nodo vacío, aunque ahora que lo pienso no es nec... :v xD
@@ -336,8 +339,8 @@ class MatrizOrtogonal{
     template <class T>
     void MatrizOrtogonal<T>:: mostrarDatos(){        
         int capaActual = 0;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
-        NodoOrtogonal<T>* layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
-        NodoOrtogonal<T>* row, node;//con este se accederá a las filas                        
+        NodoOrtogonal<T> *layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
+        NodoOrtogonal<T> *row, *node;//con este se accederá a las filas                        
         
         do{
             node = row = layer;//row = layer; node = row;
@@ -365,15 +368,36 @@ class MatrizOrtogonal{
     template <class T>
     void MatrizOrtogonal<T>::borderExactly(){
         for (int columnas = 0; columnas < ancho; columnas++){
-            cout<<"......."
+            cout<<".......";
         }
         cout<<"\n";        
     }
 
     template <class T>
     void MatrizOrtogonal<T>::clean(){
+        int capaActual = 0;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
+        NodoOrtogonal<T> *layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
+        NodoOrtogonal<T> *row, *node;//con este se accederá a las filas                        
+        
+        do{
+            node = row = layer;//row = layer; node = row;            
+            layer = layer->getEntrante();//para que no se pierda la referencia al nivel que toca, para iniciar todo desde 0, y trabajar de forma similar a como se hizo en el primer nivel...
 
-    }
+            do{//para recorrer cada fila                            
+                row = row->getAbajo();
+                do{//para recorrer cada columna
+                    NodoOrtogonal<T>* auxiliar = node->getSiguiente();
+                    node->~NodoOrtogonal();
+                    delete node;//al exe esto, se exe automáticamente el destructor de node? yo diría que si xD, pero si no da error, probaremos invocarlo manuualmente xD
+                    node = auxiliar;
+                }while(node!=NULL);//podríamos colocar que se detenga cuando siguiente sea == NULL, así al salir se podrá imprimir la útlima fila con | al ini y al final xD
+                
+                node = row;
+            }while(row!=NULL);//con revisar uno basta por el hecho de tener =# de elementos
+                   
+            capaActual++;
+        }while(capaActual<niveles);
+    }//solo que cambia un poquito...
 
     template <class T>
     int MatrizOrtogonal<T>::getAncho(){return ancho;}
@@ -384,7 +408,9 @@ class MatrizOrtogonal{
     template <class T>
     NodoOrtogonal<T>* MatrizOrtogonal<T>::getPrimerNodo(){return primerNodo;}
     template <class T>
-    NodoOrtogonal<T>* MatrizOrtogonal<T>::getUltimoNodo(){return ultimoNodo;}
+    NodoOrtogonal<T>* MatrizOrtogonal<T>::getUltimoNodo(){return ultimoNodo;}   
+    template <class T>
+    MatrizOrtogonal<T>::~MatrizOrtogonal(){clean();}
 #endif
 //Estaba pensando que después de crear cada mariz ortognonal con solo datos bidi, que se encarga de la dim 2D,
 //retorne la matriz, para que ya en otro for, se pueda hacer el establecimiento de lo que hace falta y así

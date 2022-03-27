@@ -40,7 +40,7 @@ class NodoOrtogonal {
     template <class T>//Recuerda que indicar que es una plantilla, debe colocarse en cada método, sea que solo exista un arch .cpp o que esté separado como este, y esto se hace porque debe indicarse especificamente a quine pertenece y en qué consiste, para que sepa cómo trabajar con él el compilador...
     NodoOrtogonal<T>::NodoOrtogonal()//recuerd que en las definiciones de los métodos sí debes colocar la clase a la cual pertenecen, sea que seencuentrene en el mismo archivo de las "declaraciones" o no
     {        
-        //ahorita veremos que cosas debemos hacer null...
+        x1 = x2 = y1 = y2 = z1 = z2 = NULL;
     }
 
     template <class T>//Recuerda que indicar que es una plantilla, debe colocarse en cada método, sea que solo exista un arch .cpp o que esté separado como este, y esto se hace porque debe indicarse especificamente a quine pertenece y en qué consiste, para que sepa cómo trabajar con él el compilador...
@@ -121,13 +121,12 @@ class NodoOrtogonal {
     template <class T>
     NodoOrtogonal<T>::~NodoOrtogonal<T>(){//el destructor
         delete x1;
-        delete x2:
+        delete x2;
         delete y1;
         delete y2;
         delete z1;
-        delete z2;
-        //no creo que de problemas si la lista está vacía :v xD
-    }
+        delete z2;        
+    }//no dará problemas si la lista está vacía, porque al intentar limpiarla se dará a notr que el tamaño es 0, por lo tanto no se exe ninguna vez el ciclo...
 
 #endif
 

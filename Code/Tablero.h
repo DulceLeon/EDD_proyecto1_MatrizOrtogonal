@@ -6,25 +6,26 @@
 #include <string>
 #include "MatrizOrtogonal.cpp"
 
-//using namespace std;//no me recuerdo si debo incluirlo en ambos archivos [cabecera y def de la clase...]
+using namespace std;//no me recuerdo si debo incluirlo en ambos archivos [cabecera y def de la clase...]
 class Tablero{
-    private:    
-        ~Tablero();
+    private:            
         MatrizOrtogonal<string>* matriz;
         string* symbBlank;
         NodoOrtogonal<string>* espacioVacio;
-        string movimientosPosibles[];
+        string movimientosPosibles[6];//el tamaño de los arreglos si es nec colocarlo en el .h en caso de tener archivos separados...
     
     public:
         Tablero(int, int, int);//ancho, alto, #niveles
         void agregarElementos(string);
-        void setEspacioVacio();
-        int getLevels();
-        int getWidth();
-        int getHeight();
-        string* getMovimientosPosibles();//si mal no recuedo, para devolver un arreglo, debe devolverse un puntero...
-        MatrizOrtogonal<string>* getMatrizOrtogonal();
-        NodoOrtogonal<string>* getNodoVacio();
+        void setEspacioVacio(void);
+        int getLevels(void);
+        int getWidth(void);
+        int getHeight(void);
+        string* getMovimientosPosibles(void);//si mal no recuedo, para devolver un arreglo, debe devolverse un puntero...
+        MatrizOrtogonal<string>* getMatrizOrtogonal(void);
+        NodoOrtogonal<string>* getNodoVacio(void);
+
+        ~Tablero();
 };
 #endif
 //aquí se tendrá a la matriz ortogonal con los punteros en Z ya establecidos

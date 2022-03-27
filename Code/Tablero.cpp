@@ -4,24 +4,22 @@
 #include "Tablero.h"
 
 using namespace std;
-
 Tablero::Tablero(int ancho, int alto, int niveles){
     this->symbBlank = new string("x");
-    matriz = new MatrizOrtogonal<string>(ancho, alto, niveles);
-    movimientosPosibles[6];//si da error, es poque le diste tamaño aqui, por lo tanto deberás colocar movP[6] en el .h
+    matriz = new MatrizOrtogonal<string>(ancho, alto, niveles);    
 }
 
 void Tablero::agregarElementos(string elemento){//se invocará en el manejador del juego del 15, en cada forma de ingresar datos...
     this->matriz->agregarContenido(new string(elemento));    
 }
 
-void Tablero::setEspacioVacio(){
+void Tablero::setEspacioVacio(void){
     espacioVacio = this->matriz->buscarNodo(this->symbBlank);//new string("x")
 }//se invocará antes del método para obtener los movimientos posibles, específicamente después de crear solicitar todos los datos, porque despues este nodo se obtendrá del método shift...
 
-string* Tablero::getMovimientosPosibles(){//pongo el *, porque, se deolverá un arreglo y ellos son objs entonces hay que hacer ref a ellos, con esto se obtiene acceso al 1er elemento y como una lista enlazada, al menos en ese sentido, se puede acceder a los demás...        
+string* Tablero::getMovimientosPosibles(void){//pongo el *, porque, se deolverá un arreglo y ellos son objs entonces hay que hacer ref a ellos, con esto se obtiene acceso al 1er elemento y como una lista enlazada, al menos en ese sentido, se puede acceder a los demás...        
     if(this->espacioVacio->getAnterior() != NULL){
-        movimientosPosibles[0] = "izquierda";
+        movimientosPosibles[0] = "izquierda";//si al arreglo le add un * [es decir, indicara que es un puntero], el contenido debería asignarlo: new string("izquierda")
     }else{
         movimientosPosibles[0] = "";
     }
@@ -53,18 +51,19 @@ string* Tablero::getMovimientosPosibles(){//pongo el *, porque, se deolverá un 
     return movimientosPosibles;
 }//este siempre será invocado después de tener 
 
-MatrizOrtogonal<string>* Tablero::getMatrizOrtogonal(){return this->matriz;}
+MatrizOrtogonal<string>* Tablero::getMatrizOrtogonal(void){return this->matriz;}
 
-NodoOrtogonal<string>* Tablero::getNodoVacio(){return this->espacioVacio;}
+NodoOrtogonal<string>* Tablero::getNodoVacio(void){return this->espacioVacio;}
 
-int Tablero::getLevels(){this->matriz->getNumeroNiveles();}
+int Tablero::getLevels(void){return this->matriz->getNumeroNiveles();}
 
-int Tablero::getWidth(){this->matriz->getAncho();}
+int Tablero::getWidth(void){return this->matriz->getAncho();}
 
-int Tablero::getHeight(){this->matriz->getAlto();}
+int Tablero::getHeight(void){return this->matriz->getAlto();}
 
 Tablero::~Tablero(){
-    delete matriz;
-    delete movimientosPosibles;
+    this->matriz->~MatrizOrtogonal();//para eliminar lo que contiene dentro
+    delete matriz;//y luego de eso eliminarse a si misma xD
+    //delete movimientosPosibles;//creo que debo hacerlo un puntero... me recuerdo que la aux mencionó algo así, y dijjo que recordaba que sin el * no iba a funcionar pero en realidad si le salió...
     delete symbBlank;
 }
