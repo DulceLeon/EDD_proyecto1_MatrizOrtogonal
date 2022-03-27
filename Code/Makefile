@@ -29,5 +29,5 @@ NodoOrtogonal.o: NodoOrtogonal.cpp
 #puesto que los archivos que se generan son para el sistema específico
 #en el que se compiló
 clean: 
-	del *.o
+	-rm *.o output
 

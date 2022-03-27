@@ -128,7 +128,7 @@ class MatrizOrtogonal{
         int capasCreadas = 0;
         primerNodo = new NodoOrtogonal<T>();
         NodoOrtogonal<T> *actualLayer = primerNodo;        
-        NodoOrtogonal<T> *previousLayer, *previousRowLayer, *previousNodeLayer;
+        NodoOrtogonal<T> *previousLayer, *previousRowLayer, *previousNodeLayer;//estos son previos de la capa de arriba, es decir, están como superpuestos...
         int filasCreadas = 0;
         NodoOrtogonal<T> *actualRow = actualLayer;
         NodoOrtogonal<T> *actualNode = actualRow;       
@@ -160,20 +160,25 @@ class MatrizOrtogonal{
                 if(capasCreadas>0){
                     previousRowLayer = previousRowLayer->getAbajo();
                     previousNodeLayer = previousRowLayer;
-                }                   
+                }//con esta condición, se hacen null cuando el número de filas se ha alcanzado...                   
 
-                previousRow = actualRow;
-                actualRow = new NodoOrtogonal<T>();//aquí se crea la primer columna
-                actualNode = actualRow;
                 filasCreadas++;
+                if(filasCreadas<alto){
+                    previousRow = actualRow;//cuando se alance el #filas solicitadas, este seguirá siendo NULL, por el get que hizo una col más allá de las existentes
+                    actualRow = new NodoOrtogonal<T>();//aquí se crea la primer columna
+                    actualNode = actualRow;
+                }
             }while(filasCreadas < alto);
 
-            previousNodeLayer = previousRowLayer = previousLayer = actualLayer;//previousLayer = actualLayer; previousRowLayer = previousLayer;  previousNodeLayer = previousRowLayer;
             capasCreadas++;
-
-            actualLayer = new NodoOrtogonal<T>();
-            actualNode = actualRow = actualLayer;//actualNode = actualRow;
+            if(capasCreadas < niveles){
+                previousNodeLayer = previousRowLayer = previousLayer = actualLayer;//previousLayer = actualLayer; previousRowLayer = previousLayer;  previousNodeLayer = previousRowLayer;
+                actualLayer = new NodoOrtogonal<T>();
+                actualNode = actualRow = actualLayer;//actualNode = actualRow;
+            }            
         }while(capasCreadas < niveles);        
+
+        ultimoNodo = actualNode;//puesto que ese es el que tiene la  isntancia del último nodo creado...
     }//NICE
 
     template <class T>
@@ -344,21 +349,20 @@ class MatrizOrtogonal{
         
         do{
             node = row = layer;//row = layer; node = row;
-            cout<<"Nivel "<<(capaActual+1)<<"\n";
-            borderExactly();
+            cout<<"Nivel "<<(capaActual+1)<<"\n"<<endl;            
             do{//para recorrer cada fila            
-                borderExactly();
+                
                 do{                   
-                    cout<<"|  "<<node->getContenido();
+                    cout<<"|  "<<node->getContenido()<<" ";
                     node = node->getSiguiente();
                 }while(node!=NULL);//podríamos colocar que se detenga cuando siguiente sea == NULL, así al salir se podrá imprimir la útlima fila con | al ini y al final xD
 
-                borderExactly();
+                cout<<endl;
+                
                 row = row->getAbajo();
                 node = row;
-            }while(row!=NULL);//con revisar uno basta por el hecho de tener =# de elementos
+            }while(row!=NULL);//con revisar uno basta por el hecho de tener =# de elementos            
             
-            borderExactly();
             cout<<"\n";
             layer = layer->getEntrante();//[v]            
             capaActual++;

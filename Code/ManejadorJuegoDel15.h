@@ -14,8 +14,7 @@
 using namespace std;
 class ManejadorJuegoDel15{
     private:            
-        char opcion;
-        string nombreJugador;
+        char opcion;        
         Tablero* tablero;
         ManejadorTablero* manejadorTablero;
         int pasosEmpleados;
@@ -37,9 +36,8 @@ class ManejadorJuegoDel15{
         void reiniciar();//limpia la matriz e invoca nuevamente a jugar...        
 
     public:
-        ManejadorJuegoDel15();        
+        ManejadorJuegoDel15(void);        
         void iniciarJuego();  
-
         ~ManejadorJuegoDel15();      
 };
 #endif

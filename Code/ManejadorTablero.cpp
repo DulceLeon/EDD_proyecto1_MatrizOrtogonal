@@ -2,12 +2,20 @@
 
 using namespace std;
 
-char ManejadorTablero::crearTableroManual(Tablero* tablero){
+ManejadorTablero::ManejadorTablero(){
+    /*this->jugador = new char[30];//por el caracter de fin
+    /*strcpy(jugador, "cadena");
+    cout<<jugador;*/
+}
+
+char ManejadorTablero::crearTableroManual(Tablero* tablero){    
+    //char *nombreJugador = new char[25];
     string niveles, ancho, alto;
     
     cout<<"\t\t\t\t::::CREACIÓN DE TABLERO::::\n";
     cout<<"\n1. Ingresa tu nombre: ";
-    cin>>nombreJugador;
+    cin.get();
+    getline(cin, jugador);
     cout<<"\n2. Ingresa el #niveles:  ";//minimo debería ser de 1
     cin>>niveles;
     cout<<"\n3. Ingresa el ancho: ";//min de 2, esto por la lógica el juego...
@@ -15,7 +23,12 @@ char ManejadorTablero::crearTableroManual(Tablero* tablero){
     cout<<"\n4. Ingresa el alto: ";//min de 2
     cin>>alto;
 
-    tablero = new Tablero(stoi(niveles), stoi(ancho), stoi(alto));//se crea el tablero y por tanto la matriz...    
+    //this->jugador = (char*) malloc((nombreJugador).length()+1);
+    //this->setNombre(nombreJugador);
+    cout<<jugador;
+    /*this->jugador = nombreJugador.c_str();*/
+
+    tablero = new Tablero(stoi(ancho), stoi(alto), stoi(niveles));//se crea el tablero y por tanto la matriz...    
 
     if(solicitarDatos(tablero) == '7'){
         return '7';
@@ -27,9 +40,11 @@ char ManejadorTablero::solicitarDatos(Tablero* tablero){
     int niveles = 1, filas = 1, columnas = 1;
     string dato;    
     
+    system("clear");
     cout<<"\nIngresa los datos de la casilla en [nivel, fila, columna] solicitada :)\n";
     cout<<"[presiona ENTER para continuar]\n";
-    system("pause");
+    cin.get();
+    cin.get();
 
     while((niveles*filas*columnas) < (tablero->getLevels()*tablero->getHeight()*tablero->getWidth())){
         tablero->getMatrizOrtogonal()->mostrarDatos();//aunque se volverá más complejo, pero sino no se podrá verificar... y también mostrar esto en el juego xD xD
@@ -81,5 +96,14 @@ char ManejadorTablero::confirmarAccion(char opcion){
     ((decision=='S' && opcion == 'S')?'7':'0')));//si en vía 0, es porque nada pasará...
 }
 
-string ManejadorTablero::getNombreJugador(){return this->nombreJugador;}
+/*void ManejadorTablero::setNombre(char* cadena){
+    delete[] jugador;
+    cout<<"error antes de crear?";
+    jugador = new char[26];
+    cout<<"error al crear?";
+    strcpy(jugador, cadena);
+    cout<<"error al asignar?";
+}*/
+
+string ManejadorTablero::getNombreJugador(){return jugador;}
 Tablero* ManejadorTablero::getMatrizOriginal(){return this->tableroOriginal;}

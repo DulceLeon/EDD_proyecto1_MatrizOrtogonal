@@ -9,7 +9,7 @@
 using namespace std;
 
 int main(int args, char** argv){
-    ManejadorJuegoDel15* manejadorJuegoDel15 = new ManejadorJuegoDel15();
+    ManejadorJuegoDel15* manejadorJuegoDel15 = new ManejadorJuegoDel15();    
 
     manejadorJuegoDel15->iniciarJuego();
     return 0;

@@ -2,9 +2,9 @@
 
 using namespace std;
 
-ManejadorJuegoDel15::ManejadorJuegoDel15(){
-    this->iniciarJuego();    
+ManejadorJuegoDel15::ManejadorJuegoDel15(void){     
     this->manejadorOrdenamiento = new ManejadorOrdenamiento();
+    this->manejadorTablero = new ManejadorTablero();    
 }//aunque el compilador genere el constructor por defecto, si vas a implementarlo, entonces deberás declararlo en el .h
 
 void ManejadorJuegoDel15::iniciarJuego(){
@@ -34,25 +34,25 @@ void ManejadorJuegoDel15::iniciarJuego(){
             cout<<"Opción invalida, puedes ingresar cualquiera de las opciones del menú";
             opcion = 0;//para que así regrese en caso se equivoque...
         }
-        system("cls");//no creo que borre info que no debería xD, porque cuando se sale del caso, es porque resulta nec cb de él...
+        system("clear");//no creo que borre info que no debería xD, porque cuando se sale del caso, es porque resulta nec cb de él...
     }while(opcion != '7');//iba a poner -3, pero me da cosita que de error con eso xD
 
     cout<<"Hasta pronto :')\n";
 }
 
 char ManejadorJuegoDel15::mostrarHome(){    
-    printf("%15s\n","1. Crear tablero");
-    printf("%15s\n","2. Cargar tablero");
-    printf("%15s\n","3. Crear tablero aleatorio");
-    printf("%15s\n","4. Ver historial");
-    printf("%15s\n","7. Salir");
+    printf("\t%15s\n\t","1. Crear tablero");
+    printf("%15s\n\t","2. Cargar tablero");
+    printf("%15s\n\t","3. Crear tablero aleatorio");
+    printf("%15s\n\t","4. Ver historial");
+    printf("%15s\n\t","7. Salir");
     printf("\n\n\n");    
-    printf("%11s\n\t%10s", "  ||||||", "|||||||||");
-    printf("%11s\n\t%10s", " |||||||", "||||");
-    printf("%11s\n\t%10s", "////||||", "||||||||");
-    printf("%11s\n\t%10s", "    ||||", "     |||");
-    printf("%11s\n\t%10s", "    ||||", "     |||");
-    printf("%11s\n\t%10s", "|||||||||||","||||||||");
+    printf("%21s%10s\n", "  ||||||", "|||||||||");
+    printf("%21s%5s\n", " |||||||", "||||");
+    printf("%21s%9s\n", "////||||", "||||||||");
+    printf("%21s%10s\n", "    ||||", "     |||");
+    printf("%21s%10s\n", "    ||||", "     |||");
+    printf("%23s%5s\n", "|||||||||||","||||||||");
     cout<<endl<<endl<<endl<<"opcion: ";
     cin>>opcion;//aquí se pide el dato
     return opcion;    
@@ -81,7 +81,7 @@ char ManejadorJuegoDel15::jugar(){
 
     cout<<"\nPor favor ingresa el número correspondiente al tipo de movimiento a realizar :)\n";
     cout<<"[presiona ENTER para continuar]\n";
-    system("pause");
+    cin.get();//eqq de system("pause");
 
     while(juegoGanado && (*opcion != 'T')){//no dejé una comp con el new, puesto que creo que al hacer eso lo que estaría comparando es si las posiciones en memo son iguales...
         if(opcion != NULL){
