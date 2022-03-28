@@ -4,9 +4,17 @@
 #include "Tablero.h"
 
 using namespace std;
+
+Tablero::Tablero(){}
+
 Tablero::Tablero(int ancho, int alto, int niveles){
     this->symbBlank = new string("x");
-    matriz = new MatrizOrtogonal<string>(ancho, alto, niveles);    
+    matriz = new MatrizOrtogonal<string>(ancho, alto, niveles);        
+    cout<<"instancia matriz-tablero: "<<matriz;
+}
+
+void Tablero::agregarElementos(string *elemento){//se invocará en el manejador del juego del 15, en cada forma de ingresar datos...
+    this->matriz->agregarContenido(elemento);    
 }
 
 void Tablero::agregarElementos(string elemento){//se invocará en el manejador del juego del 15, en cada forma de ingresar datos...
@@ -14,7 +22,7 @@ void Tablero::agregarElementos(string elemento){//se invocará en el manejador d
 }
 
 void Tablero::setEspacioVacio(void){
-    espacioVacio = this->matriz->buscarNodo(this->symbBlank);//new string("x")
+    espacioVacio = this->matriz->getUltimoNodo();//pues por defecto se tendrá eso..
 }//se invocará antes del método para obtener los movimientos posibles, específicamente después de crear solicitar todos los datos, porque despues este nodo se obtendrá del método shift...
 
 string* Tablero::getMovimientosPosibles(void){//pongo el *, porque, se deolverá un arreglo y ellos son objs entonces hay que hacer ref a ellos, con esto se obtiene acceso al 1er elemento y como una lista enlazada, al menos en ese sentido, se puede acceder a los demás...        
@@ -52,6 +60,8 @@ string* Tablero::getMovimientosPosibles(void){//pongo el *, porque, se deolverá
 }//este siempre será invocado después de tener 
 
 MatrizOrtogonal<string>* Tablero::getMatrizOrtogonal(void){return this->matriz;}
+
+string* Tablero::getSymbBlank(){return this->symbBlank;}
 
 NodoOrtogonal<string>* Tablero::getNodoVacio(void){return this->espacioVacio;}
 

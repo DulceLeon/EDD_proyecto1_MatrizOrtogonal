@@ -1,0 +1,8 @@
+g++ -c NodoOrtogonal.cpp
+g++ -c MatrizOrtogonal.cpp
+g++ -c ManejadorTablero.cpp
+g++ -c ManejadorOrdenamiento.cpp
+g++ -c Tablero.cpp
+g++ -c ManejadorJuegoDel15.cpp
+g++ -c Main.cpp
+g++ -o output NodoOrtogonal.o MatrizOrtogonal.o ManejadorTablero.o ManejadorOrdenamiento.o Tablero.o ManejadorJuegoDel15.o Main.o 

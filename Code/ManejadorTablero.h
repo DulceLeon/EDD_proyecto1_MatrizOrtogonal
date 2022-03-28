@@ -8,14 +8,14 @@
 
 class ManejadorTablero{
     private:    
-        char solicitarDatos(Tablero*);        
+        char solicitarDatos(Tablero**);        
         //char* jugador;
         string jugador;
         Tablero* tableroOriginal;
 
     public:
         ManejadorTablero();
-        char crearTableroManual(Tablero*);
+        char crearTableroManual(Tablero**);
         char crearTableroAleatorio(Tablero*);
         char cargarTablero(Tablero*);
         //void setNombre(char*);
