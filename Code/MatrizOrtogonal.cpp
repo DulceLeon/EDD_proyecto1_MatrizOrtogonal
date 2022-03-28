@@ -29,8 +29,8 @@ class MatrizOrtogonal{
         MatrizOrtogonal<T>* crearMatriz2d();//add el asterisco, puesto que un objeto en realidad es un ptro        
         void crearMatriz3d();//no debe devolver nada puesto que este modificará directamente los atrib de esta clase...        
         void crearMatrizCompleta();
-        void agregarContenido(T*);
-        NodoOrtogonal<T>* buscarNodo(T*);
+        void agregarContenido(T);
+        NodoOrtogonal<T>* buscarNodo(T);
         NodoOrtogonal<T>* shift(NodoOrtogonal<T>*, int);//nodo con contenido X [por el contexto del juego], string-> tipo pteo: izq, der, arr, aba, sal, ent        
         void mostrarDatos();        
         void clean();
@@ -194,7 +194,7 @@ class MatrizOrtogonal{
     }//NICE
 
     template <class T>
-    void MatrizOrtogonal<T>::agregarContenido(T *contenido){
+    void MatrizOrtogonal<T>::agregarContenido(T contenido){
         if(capaActual != NULL || filaActual != NULL || nodoActual != NULL){//yo diría que con la condición que capa != null es más que suficiente... puesto que va a ser null cuando el de la fila y el nodo, sean null
             //cout<<"nodoActual: "<<this->nodoActual<<" ";
             this->nodoActual->setContenido(contenido);//se establece el contenido            
@@ -229,7 +229,7 @@ class MatrizOrtogonal{
     }//cuando todos lleguen a null quiere decir que está llena, entonces no tendrían por qué hacer que dejen de ser null...
 
     template <class T>
-    NodoOrtogonal<T>* MatrizOrtogonal<T>::buscarNodo(T* criterioBusqueda){
+    NodoOrtogonal<T>* MatrizOrtogonal<T>::buscarNodo(T criterioBusqueda){//deprecated, al menos para este porque los strings DEBEN compararse con cmpstring xD
         int capaActual = 0;//lo inicializo en 1, para que no se entre al ciclo, en caso de que solo se req 1 capa...
         NodoOrtogonal<T> *layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
         NodoOrtogonal<T> *row, *node;//con este se accederá a las filas                        

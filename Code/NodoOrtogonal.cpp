@@ -16,12 +16,12 @@ class NodoOrtogonal {
         NodoOrtogonal<T>* y2;//aba
         NodoOrtogonal<T>* z1;//saliendo
         NodoOrtogonal<T>* z2;//entrando
-        T* contenido;
+        T contenido;
 
     public://se declaran los prototipos de las funciones, métodos normales y cnstrcs xD        
         NodoOrtogonal();//para inicializar el primer nodo, de cada fila y creo que tb matriz...
         NodoOrtogonal(NodoOrtogonal<T>*);//x1        
-        void setContenido(T*);        
+        void setContenido(T);        
         void setNodoAnterior(NodoOrtogonal<T>*);//x1
         void setNodoSiguiente(NodoOrtogonal<T>*);//x2
         void setNodoArriba(NodoOrtogonal<T>*);//y1
@@ -34,7 +34,7 @@ class NodoOrtogonal {
         NodoOrtogonal<T>* getAbajo();
         NodoOrtogonal<T>* getSaliente();
         NodoOrtogonal<T>* getEntrante();//z2        
-        T* getContenido();
+        T getContenido();
        ~NodoOrtogonal();//Destructor       
 };
     template <class T>//Recuerda que indicar que es una plantilla, debe colocarse en cada método, sea que solo exista un arch .cpp o que esté separado como este, y esto se hace porque debe indicarse especificamente a quine pertenece y en qué consiste, para que sepa cómo trabajar con él el compilador...
@@ -50,7 +50,7 @@ class NodoOrtogonal {
     }    
 
     template <class T>
-    void NodoOrtogonal<T>::setContenido(T* content){
+    void NodoOrtogonal<T>::setContenido(T content){
         contenido = content;
     }
 
@@ -114,7 +114,7 @@ class NodoOrtogonal {
     }
 
     template <class T>
-    T* NodoOrtogonal<T>::getContenido(){
+    T NodoOrtogonal<T>::getContenido(){
         return contenido;
     }
 

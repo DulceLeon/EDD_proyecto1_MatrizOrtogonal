@@ -12,8 +12,8 @@ class ManejadorOrdenamiento{//en realidad esta clase debería estar en la de Mat
         MatrizOrtogonal<string>* matrizOrdenada;
 
     public:
-        void ordenarMatriz(MatrizOrtogonal<string>*, string*);
-        string* getMenorDato(MatrizOrtogonal<string>*, NodoOrtogonal<string>*,
+        void ordenarMatriz(MatrizOrtogonal<string>*, string);
+        string getMenorDato(MatrizOrtogonal<string>*, NodoOrtogonal<string>*,
             NodoOrtogonal<string>*, NodoOrtogonal<string>*, int);
         bool esMatrizOrdenada(MatrizOrtogonal<string>*);        
         MatrizOrtogonal<string>* getMatrizOrdenada();

@@ -2,11 +2,9 @@
 
 using namespace std;
 
-void ManejadorOrdenamiento::ordenarMatriz(MatrizOrtogonal<string>* matriz, string* simboloVacio){//este nodo lo obtendrá de tablero, puesto que éste es quien lo posee...
+void ManejadorOrdenamiento::ordenarMatriz(MatrizOrtogonal<string>* matriz, string simboloVacio){//este nodo lo obtendrá de tablero, puesto que éste es quien lo posee...
     this->matrizOrdenada = matriz;
-    //con esto se procede  a poner hasta el final el nodo vacío, para así evitar tener posibles problemas debido al intento de convertir este a un número xD xD
-    this->matrizOrdenada->buscarNodo(simboloVacio)->setContenido(this->matrizOrdenada->getUltimoNodo()->getContenido());//para así modificar de una vez el contenido al de la matriz que se va a ordenar xD xD    
-    this->matrizOrdenada->getUltimoNodo()->setContenido(simboloVacio);
+    //puesto que iniciarás a partir de la matriz original, no será nec ubicar al nodo vacío al final, porque ese es su lugar por defecto...    
     
     NodoOrtogonal<string> *layer = this->matrizOrdenada->getPrimerNodo();//este nodo se utilizará para accedere a todo de la capa
     NodoOrtogonal<string> *row, *node, *previousNode;//con este se accederá a las filas 
@@ -16,8 +14,8 @@ void ManejadorOrdenamiento::ordenarMatriz(MatrizOrtogonal<string>* matriz, strin
     do{        
         do{//para recorrer cada fila                            
             do{//para recorrer cada columna
-                string* contenido = this->getMenorDato(matriz, layer, row, node, stoi(((node->getAnterior()!= NULL)?(*(node->getAnterior()->getContenido())):(*(previousNode->getContenido())))));
-                if(contenido != NULL){
+                string contenido = getMenorDato(matriz, layer, row, node, stoi(((node->getAnterior()!= NULL)?(node->getAnterior()->getContenido()):(previousNode->getContenido()))));
+                if(contenido != "NULL"){
                     if(node->getAnterior()!= NULL){
                         node->getAnterior()->setContenido(contenido);
                     }else{
@@ -38,7 +36,7 @@ void ManejadorOrdenamiento::ordenarMatriz(MatrizOrtogonal<string>* matriz, strin
     }while(layer != NULL);
 }
 
-string* ManejadorOrdenamiento::getMenorDato(MatrizOrtogonal<string>* matriz, NodoOrtogonal<string>* capaInicial,
+string ManejadorOrdenamiento::getMenorDato(MatrizOrtogonal<string>* matriz, NodoOrtogonal<string>* capaInicial,
     NodoOrtogonal<string>* filaInicial, NodoOrtogonal<string>* nodoInicial, int posibleMenorDato){
     
     NodoOrtogonal<string> *layer = capaInicial;//este nodo se utilizará para accedere a todo de la capa
@@ -49,7 +47,7 @@ string* ManejadorOrdenamiento::getMenorDato(MatrizOrtogonal<string>* matriz, Nod
     do{                 
         do{//para recorrer cada fila                            
             do{//para recorrer cada columna
-                if(stoi(*(node->getContenido())) < posibleMenorDato){//yo pensaría que aquí no se comparan las direcciones...
+                if(stoi(node->getContenido()) < posibleMenorDato){//yo pensaría que aquí no se comparan las direcciones...
                     cout<<"compracion [busqueda nodo]: contenido nodo-> "<<node->getContenido()<<"criterio búsqueda-> "<<posibleMenorDato;
                     smallerNode = node;                    
                 }
@@ -65,11 +63,11 @@ string* ManejadorOrdenamiento::getMenorDato(MatrizOrtogonal<string>* matriz, Nod
     }while(layer != NULL);
 
     if(smallerNode!= NULL){
-        string* contenido = smallerNode->getContenido();
-        smallerNode->setContenido(new string(to_string(posibleMenorDato)));
+        string contenido = smallerNode->getContenido();
+        smallerNode->setContenido(to_string(posibleMenorDato));
         return contenido;
     }
-    return NULL;
+    return "NULL";
 }
 
 

@@ -23,9 +23,7 @@ char ManejadorTablero::crearTableroManual(Tablero** tablero){
     cin>>ancho;
     cout<<"\n4. Ingresa el alto: ";//min de 2
     cin>>alto;
-
-    //this->jugador = (char*) malloc((nombreJugador).length()+1);
-    //this->setNombre(nombreJugador);
+    
     cout<<jugador;
     /*this->jugador = nombreJugador.c_str();*/
 
@@ -82,7 +80,7 @@ char ManejadorTablero::solicitarDatos(Tablero** tablero){
         }        
     }
     
-    (*tablero)->agregarElementos((*tablero)->getSymbBlank());//se setea el símbolo que representa el espacio vacío
+    (*tablero)->agregarElementos(((*tablero)->getSymbBlank()));//se setea el símbolo que representa el espacio vacío
     this->tableroOriginal = (*tablero);        
     return '0';//puesto que no se tiene una axn diferente cuando se retorna este 0, lo que pasará es que se iniciará la siguiente fase [jugar xD]...
 }//nice
