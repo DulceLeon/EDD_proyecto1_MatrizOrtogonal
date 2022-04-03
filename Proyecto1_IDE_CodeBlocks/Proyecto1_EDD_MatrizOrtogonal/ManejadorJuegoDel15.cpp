@@ -64,6 +64,8 @@ char ManejadorJuegoDel15::crearTableroManual(){
         return '7';
     }
     cout<<endl<<"Es hora de jugar :)";
+
+   // this->manejadorOrdenamiento->ordenarMatriz(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal(), tablero->getSymbBlank());//sino pues con el tablero original y si ninguna no, entonces que se envíe el valor... creo que eso hacía antes al enviar tablero para crearlo manualmente...
     return jugar();//puesto que es el ultimo paso, el valor a retornar, debe ser el de éste método xD
 }
 
@@ -95,9 +97,7 @@ char ManejadorJuegoDel15::jugar(){
             cout<<"Manejador15 "<<tablero->getNodoVacio();
             cout<<" contenido? "<<*(tablero->getNodoVacio())<<endl;
             this->tablero->getMatrizOrtogonal()->shift(tablero->getElNodoVacio(), (stoi(posicion)-1));//puesto que de no seleccionar un comodín para dejar de jugar, este tiene la ubic+1 xD
-            //this->tablero->resetEspacioVacio(this->tablero->getMatrizOrtogonal()->shift(tablero->getNodoVacio(), (stoi(posicion)-1)));//puesto que de no seleccionar un comodín para dejar de jugar, este tiene la ubic+1 xD
-            //this->tablero->getMatrizOrtogonal()->shift(&(tablero->getNodoVacio()), *tablero->getNodoVacio(), (stoi(posicion)-1));
-         //   juegoGanado = this->manejadorOrdenamiento->esMatrizOrdenada(this->tablero->getMatrizOrtogonal());//se revisa si la matriz está ordenada [quizá podría ponerse un criterio para que no se esté revisando a cada ratito]
+     //       juegoGanado = this->manejadorOrdenamiento->esMatrizOrdenada(this->tablero->getMatrizOrtogonal());//se revisa si la matriz está ordenada [quizá podría ponerse un criterio para que no se esté revisando a cada ratito]
         }
 
         //system("clear");
@@ -140,7 +140,7 @@ char ManejadorJuegoDel15::verDetalle(){
 }*/
 
 void ManejadorJuegoDel15::reiniciar(){
-    this->tablero = this->manejadorTablero->getMatrizOriginal();
+    this->tablero = this->manejadorTablero->getTableroOriginal();
 }
 
 ManejadorJuegoDel15::~ManejadorJuegoDel15(){

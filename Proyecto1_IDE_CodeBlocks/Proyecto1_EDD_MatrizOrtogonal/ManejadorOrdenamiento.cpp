@@ -2,6 +2,40 @@
 
 using namespace std;
 
+bool ManejadorOrdenamiento::esMatrizOrdenada(MatrizOrtogonal<string>* matrizActual){
+    NodoOrtogonal<string> *layer = this->matrizOrdenada->getPrimerNodo();//este nodo se utilizará para accedere a todo de la capa
+    NodoOrtogonal<string> *row, *node;//con este se accederá a las filas
+
+    NodoOrtogonal<string> *layerMatrtix2 = matrizActual->getPrimerNodo();//este nodo se utilizará para accedere a todo de la capa
+    NodoOrtogonal<string> *rowMatrix2, *nodeMatrix2;
+
+    do{
+       node = row = layer;
+       nodeMatrix2 = rowMatrix2 = layerMatrtix2;
+
+       do{//para recorrer cada fila
+           do{
+              if(node->getContenido().compare(nodeMatrix2->getContenido()) != 0){
+                  return false;
+              }
+              node = node->getSiguiente();
+              nodeMatrix2 = nodeMatrix2->getSiguiente();
+           }while(node!=NULL);//puesto que ambas matrices son iguales en dimensiones, aunque posiblemente no en el orden del contenido...
+
+           row = row->getAbajo();
+           node = row;
+           rowMatrix2 = rowMatrix2->getAbajo();
+           nodeMatrix2 = rowMatrix2;
+       }while(row!=NULL);//con revisar uno basta por el hecho de tener =# de elementos
+
+       layer = layer->getEntrante();//[v]
+       layerMatrtix2 = layerMatrtix2->getEntrante();//[v]
+
+    }while(layer != NULL);//quité lo de niveles, para tener vars menos xD
+
+    return true;
+}
+
 void ManejadorOrdenamiento::ordenarMatriz(MatrizOrtogonal<string>* matriz, string simboloVacio){//este nodo lo obtendrá de tablero, puesto que éste es quien lo posee...
     this->matrizOrdenada = matriz;
     //puesto que iniciarás a partir de la matriz original, no será nec ubicar al nodo vacío al final, porque ese es su lugar por defecto...
@@ -15,7 +49,7 @@ void ManejadorOrdenamiento::ordenarMatriz(MatrizOrtogonal<string>* matriz, strin
         do{//para recorrer cada fila
             do{//para recorrer cada columna
                 string contenido = getMenorDato(matriz, layer, row, node, stoi(((node->getAnterior()!= NULL)?(node->getAnterior()->getContenido()):(previousNode->getContenido()))));
-                if(contenido != "NULL"){
+                if(contenido.compare("NULL") != 0){
                     if(node->getAnterior()!= NULL){
                         node->getAnterior()->setContenido(contenido);
                     }else{
@@ -39,6 +73,8 @@ void ManejadorOrdenamiento::ordenarMatriz(MatrizOrtogonal<string>* matriz, strin
 string ManejadorOrdenamiento::getMenorDato(MatrizOrtogonal<string>* matriz, NodoOrtogonal<string>* capaInicial,
     NodoOrtogonal<string>* filaInicial, NodoOrtogonal<string>* nodoInicial, int posibleMenorDato){
 
+    int nodosRevisados = 0;
+
     NodoOrtogonal<string> *layer = capaInicial;//este nodo se utilizará para accedere a todo de la capa
     NodoOrtogonal<string> *row = filaInicial;
     NodoOrtogonal<string> *node = nodoInicial;//con este se accederá a las filas
@@ -47,12 +83,13 @@ string ManejadorOrdenamiento::getMenorDato(MatrizOrtogonal<string>* matriz, Nodo
     do{
         do{//para recorrer cada fila
             do{//para recorrer cada columna
-                if(stoi(node->getContenido()) < posibleMenorDato){//yo pensaría que aquí no se comparan las direcciones...
+                if(stoi(node->getContenido()) < posibleMenorDato){
                     cout<<"compracion [busqueda nodo]: contenido nodo-> "<<node->getContenido()<<"criterio búsqueda-> "<<posibleMenorDato;
                     smallerNode = node;
                 }
                 node = node->getSiguiente();
-            }while(node!=NULL);//podríamos colocar que se detenga cuando siguiente sea == NULL, así al salir se podrá imprimir la útlima fila con | al ini y al final xD
+                nodosRevisados++;
+            }while(node!=NULL && nodosRevisados < ((matriz->getAlto()*matriz->getAncho()*matriz->getNumeroNiveles())-1));//debe ser la multi-1 puesto que así no se revisará el último nodo que contiene el blankSimb, evitando así errores por el stoi xD
 
             row = row->getAbajo();
             node = row;
@@ -69,11 +106,5 @@ string ManejadorOrdenamiento::getMenorDato(MatrizOrtogonal<string>* matriz, Nodo
     }
     return "NULL";
 }
-
-
-
-/*bool ManejadorOrdenamiento::esMatrizOrdenada(MatrizOrtogonal<string>* matriz){
-//Se compara la matriz que está modif el usuario, con la ordenada...
-}*/
 
 MatrizOrtogonal<string>* ManejadorOrdenamiento::getMatrizOrdenada(){return this->matrizOrdenada;}

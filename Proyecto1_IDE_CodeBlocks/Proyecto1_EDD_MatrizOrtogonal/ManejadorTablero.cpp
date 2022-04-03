@@ -107,4 +107,4 @@ char ManejadorTablero::confirmarAccion(char opcion){
 }*/
 
 string ManejadorTablero::getNombreJugador(){return jugador;}
-Tablero* ManejadorTablero::getMatrizOriginal(){return this->tableroOriginal;}
+Tablero* ManejadorTablero::getTableroOriginal(){return this->tableroOriginal;}

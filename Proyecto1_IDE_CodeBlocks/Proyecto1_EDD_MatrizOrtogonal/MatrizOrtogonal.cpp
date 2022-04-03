@@ -44,6 +44,12 @@ class MatrizOrtogonal{
         NodoOrtogonal<T>* getUltimoNodo();
 
         ~MatrizOrtogonal();
+
+    private:
+        void resetPrimerNodo(NodoOrtogonal<T>*, NodoOrtogonal<T>*);
+        void resetUltimoNodo(NodoOrtogonal<T>*, NodoOrtogonal<T>*);
+        bool resetFirstNode(NodoOrtogonal<T>*, NodoOrtogonal<T>*);
+        bool resetLastNode(NodoOrtogonal<T>*, NodoOrtogonal<T>*);
 };
 
     template <class T>
@@ -268,21 +274,27 @@ class MatrizOrtogonal{
 
         switch (ubicacionSustituto){
             case 0://izq: x1
+                this->resetPrimerNodo(nodoFoco,((nodoFoco)->getAnterior()));
                 this->shiftOrtogonal->shiftNodes((nodoFoco), ((nodoFoco)->getAnterior()), ubicacionSustituto);
             break;
             case 1://Der: x2
+                this->resetPrimerNodo(nodoFoco,((nodoFoco)->getSiguiente()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getSiguiente(), ubicacionSustituto);
             break;
             case 2://haz los equivalentes xD, luego haz el método de búsuqeda, pero antes revisa si está bien esto, apurébalo y si puedes simplificarlo, hazlo, después de eso tendrías que hacer los métodos del tablero, para los diferentes tipos de entrada de datos [aletorio, pasas todo a string y cuando sea 0 lo vuelves x, por entrada user, especificarás que el cout recibirá strings e idnicarás que el signo de vacío es una x, y el otro recibirás puros strings, ya tienes el signo de vacío, después de eso debes exe le método para buscar el vacío [con T busqueda = "X", ojo que puse comillas xD, luego creas la matriz, muestras los datos, y con eso pasas a imple el algoritmo para... ah no ese ya lo tengo iba a decir el shift xD, entonces lo pruebas, luego ves lo demás y al terminar todo lo codificable miras lo del algoritmo de resolución a base de lo que te responda el inge...]]
+                this->resetPrimerNodo(nodoFoco,((nodoFoco)->getArriba()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getArriba(), ubicacionSustituto);
             break;
             case 3://abajo: y2
+                this->resetPrimerNodo(nodoFoco,((nodoFoco)->getAbajo()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getAbajo(), ubicacionSustituto);
             break;
             case 4://saliente: z1
+                this->resetPrimerNodo(nodoFoco,((nodoFoco)->getSaliente()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getSaliente(), ubicacionSustituto);
             break;
             case 5://entrante: z2
+                this->resetPrimerNodo(nodoFoco,((nodoFoco)->getEntrante()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getEntrante(), ubicacionSustituto);
             break;
             default://aunque en realidad de no ingresar un dato correcto el usuario, se solicitará que ingrese de nuevo xD, así que no hay pena xD
@@ -353,6 +365,38 @@ class MatrizOrtogonal{
             capaActual++;
         }while(capaActual<niveles);
     }//solo que cambia un poquito...
+
+    template <class T>
+    void MatrizOrtogonal<T>::resetPrimerNodo(NodoOrtogonal<T>* nodo1, NodoOrtogonal<T>* nodo2){
+        if(!this->resetFirstNode(nodo1, nodo2)){
+            this->resetFirstNode(nodo2, nodo1);
+        }
+    }
+
+    template <class T>
+    void MatrizOrtogonal<T>::resetUltimoNodo(NodoOrtogonal<T>* nodo1, NodoOrtogonal<T>* nodo2){//este no es obligatorio utilizarlo puesto que el ultimo nodo solo se pide 1 vez en el juego, es decir cuando no se tiene aún el ptro a él para así saber dónde se encuentra el Blank xD
+        if(!this->resetLastNode(nodo1, nodo2)){
+            this->resetLastNode(nodo2, nodo1);
+        }
+    }
+
+    template <class T>
+    bool MatrizOrtogonal<T>::resetFirstNode(NodoOrtogonal<T>* posibleOldFirst, NodoOrtogonal<T>* posibleNewFirst){
+        if(posibleOldFirst == primerNodo){
+            primerNodo = posibleNewFirst;//hago esto específicamente por el shift
+            return true;
+        }
+        return false;
+    }
+
+    template <class T>
+    bool MatrizOrtogonal<T>::resetLastNode(NodoOrtogonal<T>* posibleOldLast, NodoOrtogonal<T>* posibleNewLast){
+        if(posibleOldLast == primerNodo){
+            primerNodo = posibleNewLast;//hago esto específicamente por el shift
+            return true;
+        }
+        return false;
+    }
 
     template <class T>
     int MatrizOrtogonal<T>::getAncho(){return ancho;}
