@@ -5,6 +5,7 @@ using namespace std;
 ManejadorTablero::ManejadorTablero(){
     this->tableroOriginal = new Tablero();
     this->manejadorCargaDatos = new ManejadorCargaDatos();
+    this->herramientas = new Herramientas();
 }
 
 char ManejadorTablero::crearTableroManual(Tablero** tablero){
@@ -84,12 +85,40 @@ char ManejadorTablero::solicitarDatos(Tablero** tablero){
 }//nice
 
 bool ManejadorTablero::cargarTablero(Tablero** tablero){
-    return (this->manejadorCargaDatos->cargarDatos(tablero));
+    return (this->manejadorCargaDatos->cargarDatos(tablero, &jugador));
 }
 
-/*Tablero* ManejadorTablero::getTableroCargado(){
-    return (this->manejadorCargaDatos->getTableroCargado());
-}*/
+void ManejadorTablero::crearTableroAleatorio(Tablero** tablero){//no tendría por qué devolver algo, puesto que es un proceso automático y no deberían haber fallos técnicos [es decir no provocados por el usuario]
+    cout<<"\t\t\t  ::::CREACION TABLERO ALEATORIO::::\n";
+    int alto, ancho, niveles;
+    int datosAgregados = 0, indice;
+
+    alto = 2+rand()%14;//me daba curiosidad ver de 20, pero quizá sea mucho, mejor dejo como límite al 15 xD :v
+    ancho = 2+rand()%14;
+    niveles = 1+rand()%15;
+
+    (*tablero) = new Tablero((ancho), (alto), (niveles));//se crea el tablero y por tanto la matriz...
+
+    string numerosBase[((alto*ancho*niveles)-1)];
+    this->herramientas->crearArregloOrdenado(numerosBase, ((alto*ancho*niveles)-1));//Debido al espacio vacío...
+
+    do{
+        indice = rand()%(((alto*ancho*niveles)-1));
+
+        if(numerosBase[indice].compare("null") != 0){
+            (*tablero)->agregarElementos(numerosBase[indice]);
+            numerosBase[indice] = "null";
+            datosAgregados++;
+        }
+
+    }while(datosAgregados < ((ancho*alto*niveles)-1));
+
+    (*tablero)->agregarElementos(((*tablero)->getSymbBlank()));
+    (*tablero)->getMatrizOrtogonal()->mostrarDatos();
+    cout<<endl<<"\n\nsolo hace falta que ingreses tu nombre, justo aqui xD: ";
+    cin.get();
+    getline(cin, (this->jugador));
+}
 
 char ManejadorTablero::confirmarAccion(char opcion){
     string mensaje = "De verdad deseas ";

@@ -27,6 +27,7 @@ class ManejadorJuegoDel15{
         char mostrarHome();//op: 0
         char crearTableroManual();//op: 1
         char cargarTablero();
+        char crearTableroAleatorio();
         char jugar();//se exe después que se haya especificado si después de cual de las formas de creación del tablero [imagino que se invocará dentro de los métodos de creación...]
         //void mostrarResumen(bool);//se invoacará internamente en el método confirmarAcción, dep de la respuesta xD
         //char verHistorial();//op: 4

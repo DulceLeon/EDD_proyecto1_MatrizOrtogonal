@@ -14,7 +14,7 @@ class ManejadorCargaDatos{
 
     public:
         ManejadorCargaDatos();
-        bool cargarDatos(Tablero**);
+        bool cargarDatos(Tablero**, string*);
         //Tablero* getTableroCargado();
 };
 #endif

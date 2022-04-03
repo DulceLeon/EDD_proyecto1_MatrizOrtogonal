@@ -23,7 +23,7 @@ void ManejadorJuegoDel15::iniciarJuego(){
             opcion = this->cargarTablero();
             break;
         case '3':
-            // opcion = this->crearTableroAletorio();
+            opcion = this->crearTableroAleatorio();
             break;
         case '4':
             //opcion = this->verHistorial();
@@ -69,18 +69,20 @@ char ManejadorJuegoDel15::crearTableroManual(){
     return jugar();//puesto que es el ultimo paso, el valor a retornar, debe ser el de éste método xD
 }
 
-/*char ManejadorJuegoDel15::crearTableroAletorio(){
-
-}*/
-
 char ManejadorJuegoDel15::cargarTablero(){
     if(this->manejadorTablero->cargarTablero(&(tablero))){
-        /*this->tablero = this->manejadorTablero->getTableroCargado();*/
-          // this->manejadorOrdenamiento->ordenarMatriz(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal(), tablero->getSymbBlank());//sino pues con el tablero original y si ninguna no, entonces que se envíe el valor... creo que eso hacía antes al enviar tablero para crearlo manualmente...
+        // this->manejadorOrdenamiento->ordenarMatriz(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal(), tablero->getSymbBlank());//sino pues con el tablero original y si ninguna no, entonces que se envíe el valor... creo que eso hacía antes al enviar tablero para crearlo manualmente...
         cout<<endl<<"Es hora de jugar :)";
         return jugar();
     }
     return '7';
+}
+
+char ManejadorJuegoDel15::crearTableroAleatorio(){
+    this->manejadorTablero->crearTableroAleatorio(&(tablero));
+    // this->manejadorOrdenamiento->ordenarMatriz(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal(), tablero->getSymbBlank());//sino pues con el tablero original y si ninguna no, entonces que se envíe el valor... creo que eso hacía antes al enviar tablero para crearlo manualmente...
+    cout<<endl<<"Es hora de jugar :)";
+    return jugar();
 }
 
 char ManejadorJuegoDel15::jugar(){

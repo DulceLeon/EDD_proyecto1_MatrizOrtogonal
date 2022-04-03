@@ -6,7 +6,7 @@ ManejadorCargaDatos::ManejadorCargaDatos(){
     this->delimitador = ',';
 }
 
-bool ManejadorCargaDatos::cargarDatos(Tablero** tablero){
+bool ManejadorCargaDatos::cargarDatos(Tablero** tablero, string *nombreJugador){
     string filename;
     char decision, delimitador = ',';
     string ancho, alto, niveles;
@@ -14,7 +14,7 @@ bool ManejadorCargaDatos::cargarDatos(Tablero** tablero){
     int datosLeidos = 0;
 
     system("clear");
-    cout<<"\t\t\t\t::::CREACIÓN DE TABLERO::::\n"<<endl<<endl;
+    cout<<"\t\t\t\t::::CARGA DE TABLERO::::\n"<<endl<<endl;
     cout<<"La carga de datos está por empezar, pero antes de ello\n";
     cout<<"verifica si tu archivo cumple con la siguiente sintaxis\n\n";
 
@@ -29,6 +29,8 @@ bool ManejadorCargaDatos::cargarDatos(Tablero** tablero){
 
     if(decision == 'S' || decision == 's'){
         system("clear");
+        cout<<"\nPor poco olvidaba preguntar tu nombre xD, escribelo, por favor: ";
+        cin>>(*nombreJugador);
         cout << "\nIngresa el nombre del archivo: ";
         cin.get();
         getline(cin, filename);
