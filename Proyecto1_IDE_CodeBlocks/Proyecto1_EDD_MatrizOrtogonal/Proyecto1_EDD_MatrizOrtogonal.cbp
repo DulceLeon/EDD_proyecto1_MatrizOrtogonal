@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Proyecto1_EDD_MatrizOrtogonal" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Proyecto1_EDD_MatrizOrtogonal" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Proyecto1_EDD_MatrizOrtogonal" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="Comparador.cpp" />
+		<Unit filename="Comparador.h" />
+		<Unit filename="ManejadorJuegoDel15.cpp" />
+		<Unit filename="ManejadorJuegoDel15.h" />
+		<Unit filename="ManejadorOrdenamiento.cpp" />
+		<Unit filename="ManejadorOrdenamiento.h" />
+		<Unit filename="ManejadorRegistros.cpp" />
+		<Unit filename="ManejadorRegistros.h" />
+		<Unit filename="ManejadorResultados.h" />
+		<Unit filename="ManejadorTablero.cpp" />
+		<Unit filename="ManejadorTablero.h" />
+		<Unit filename="MatrizOrtogonal.cpp" />
+		<Unit filename="NodoOrtogonal.cpp" />
+		<Unit filename="ShiftOrtogonal.cpp" />
+		<Unit filename="Tablero.cpp" />
+		<Unit filename="Tablero.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

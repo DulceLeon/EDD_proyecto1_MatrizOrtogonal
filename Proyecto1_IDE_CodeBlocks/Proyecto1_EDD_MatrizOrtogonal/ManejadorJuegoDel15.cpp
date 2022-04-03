@@ -2,10 +2,10 @@
 
 using namespace std;
 
-ManejadorJuegoDel15::ManejadorJuegoDel15(void){     
+ManejadorJuegoDel15::ManejadorJuegoDel15(void){
     this->manejadorOrdenamiento = new ManejadorOrdenamiento();
-    this->manejadorTablero = new ManejadorTablero(); 
-    this->tablero = new Tablero();       
+    this->manejadorTablero = new ManejadorTablero();
+    this->tablero = new Tablero();
 }//aunque el compilador genere el constructor por defecto, si vas a implementarlo, entonces deberás declararlo en el .h
 
 void ManejadorJuegoDel15::iniciarJuego(){
@@ -41,13 +41,13 @@ void ManejadorJuegoDel15::iniciarJuego(){
     cout<<"Hasta pronto :')\n";
 }
 
-char ManejadorJuegoDel15::mostrarHome(){    
+char ManejadorJuegoDel15::mostrarHome(){
     printf("\t%15s\n\t","1. Crear tablero");
     printf("%15s\n\t","2. Cargar tablero");
     printf("%15s\n\t","3. Crear tablero aleatorio");
     printf("%15s\n\t","4. Ver historial");
     printf("%15s\n\t","7. Salir");
-    printf("\n\n\n");    
+    printf("\n\n\n");
     printf("%21s%10s\n", "  ||||||", "|||||||||");
     printf("%21s%5s\n", " |||||||", "||||");
     printf("%21s%9s\n", "////||||", "||||||||");
@@ -56,10 +56,10 @@ char ManejadorJuegoDel15::mostrarHome(){
     printf("%23s%5s\n", "|||||||||||","||||||||");
     cout<<endl<<endl<<endl<<"opcion: ";
     cin>>opcion;//aquí se pide el dato
-    return opcion;    
+    return opcion;
 }
 
-char ManejadorJuegoDel15::crearTableroManual(){        
+char ManejadorJuegoDel15::crearTableroManual(){
     if( (this->manejadorTablero->crearTableroManual(&(tablero))) == '7'){
         return '7';
     }
@@ -75,13 +75,13 @@ char ManejadorJuegoDel15::crearTableroManual(){
 
 }*/
 
-char ManejadorJuegoDel15::jugar(){    
+char ManejadorJuegoDel15::jugar(){
     char opcion = '$';
-    string* movimientosPosibles;//para recibir un arreglo, se debe hacer con un ptro, puesto que lo que se retorna es un apuntador a la primer posición...    
-    bool juegoGanado = false;    
-    
+    string* movimientosPosibles;//para recibir un arreglo, se debe hacer con un ptro, puesto que lo que se retorna es un apuntador a la primer posición...
+    bool juegoGanado = false;
+
     cout<<"instancia tablero-J15: "<<tablero;
-    cout<<"instancia matriz-tablero: "<<tablero->getMatrizOrtogonal();    
+    cout<<"instancia matriz-tablero: "<<tablero->getMatrizOrtogonal();
     this->tablero->setEspacioVacio();//puesto que por defecto se add siempre en el último que se haya creado...
 
     cout<<"\nPor favor ingresa el número correspondiente al tipo de movimiento a realizar :)\n";
@@ -91,30 +91,34 @@ char ManejadorJuegoDel15::jugar(){
 
     while(!juegoGanado && (opcion != 'T')){//no dejé una comp con el new, puesto que creo que al hacer eso lo que estaría comparando es si las posiciones en memo son iguales...
         if(opcion != '$'){
-            string posicion(1,opcion);//esto lo hiciste para que tome el número literal y no la rep ASCII que daría si usas directamente la var opción...                        
-            this->tablero->resetEspacioVacio(this->tablero->getMatrizOrtogonal()->shift(tablero->getNodoVacio(), (stoi(posicion)-1)));//puesto que de no seleccionar un comodín para dejar de jugar, este tiene la ubic+1 xD
+            string posicion(1,opcion);//esto lo hiciste para que tome el número literal y no la rep ASCII que daría si usas directamente la var opción...
+            cout<<"Manejador15 "<<tablero->getNodoVacio();
+            cout<<" contenido? "<<*(tablero->getNodoVacio())<<endl;
+            this->tablero->getMatrizOrtogonal()->shift(tablero->getElNodoVacio(), (stoi(posicion)-1));//puesto que de no seleccionar un comodín para dejar de jugar, este tiene la ubic+1 xD
+            //this->tablero->resetEspacioVacio(this->tablero->getMatrizOrtogonal()->shift(tablero->getNodoVacio(), (stoi(posicion)-1)));//puesto que de no seleccionar un comodín para dejar de jugar, este tiene la ubic+1 xD
+            //this->tablero->getMatrizOrtogonal()->shift(&(tablero->getNodoVacio()), *tablero->getNodoVacio(), (stoi(posicion)-1));
          //   juegoGanado = this->manejadorOrdenamiento->esMatrizOrdenada(this->tablero->getMatrizOrtogonal());//se revisa si la matriz está ordenada [quizá podría ponerse un criterio para que no se esté revisando a cada ratito]
         }
 
         //system("clear");
         this->tablero->getMatrizOrtogonal()->mostrarDatos();//se muestran los datos de la matriz
-        movimientosPosibles = this->tablero->getMovimientosPosibles();        
+        movimientosPosibles = this->tablero->getMovimientosPosibles();
 
         printf("\n\n%-65s", "[R] Reiniciar  |  [T] Terminar|  [S] Salir\n");
         cout<<endl<<"Posibles Movimientos: "<<((movimientosPosibles[0]!= "")?("(1) "+movimientosPosibles[0]+","):"")<<((movimientosPosibles[1]!= "")?("(2) "+movimientosPosibles[1]+","):"")
         <<((movimientosPosibles[2]!= "")?("(3) "+movimientosPosibles[2]+","):"")<<((movimientosPosibles[3]!= "")?("(4) "+movimientosPosibles[3]+","):"")
         <<((movimientosPosibles[4]!= "")?("(5) "+movimientosPosibles[4]+","):"")<<((movimientosPosibles[5]!= "")?("(6) "+movimientosPosibles[5]+","):"");
-        cin>>opcion;//imagino que debo colocar eso, o será la dirección? para que sepa DÓNDE debe almacenar??? así como el scanf??? 
-        
-        if((opcion == 'R') || (opcion == 'T') || (opcion == 'S')){        
+        cin>>opcion;//imagino que debo colocar eso, o será la dirección? para que sepa DÓNDE debe almacenar??? así como el scanf???
+
+        if((opcion == 'R') || (opcion == 'T') || (opcion == 'S')){
             char decision = this->manejadorTablero->confirmarAccion(opcion);
-            if(decision!='8'){//si es 8, no se hará algo, porque debe seguir su transcurso natural solo que antes de tiempo... esto se logra con la condi en el while de "opcion == 'T'"          
+            if(decision!='8'){//si es 8, no se hará algo, porque debe seguir su transcurso natural solo que antes de tiempo... esto se logra con la condi en el while de "opcion == 'T'"
                 if(decision == '6'){
                     this->reiniciar();
                 }else if(decision == '7'){
                     return decision;//para que se vaya al método del switch y se muestre así el home...
                 }
-                opcion = '$';//para que así no exe el método para el shift, puesto que no escogió una opción corresp a un movimiento...            
+                opcion = '$';//para que así no exe el método para el shift, puesto que no escogió una opción corresp a un movimiento...
             }
         }
     }
@@ -132,12 +136,12 @@ char ManejadorJuegoDel15::jugar(){
 }
 
 char ManejadorJuegoDel15::verDetalle(){
-    
+
 }*/
 
 void ManejadorJuegoDel15::reiniciar(){
     this->tablero = this->manejadorTablero->getMatrizOriginal();
-}   
+}
 
 ManejadorJuegoDel15::~ManejadorJuegoDel15(){
     this->tablero->~Tablero();//esto por si acaso no se invoca de forma automática a la instancia que tiene el delete implementado xD

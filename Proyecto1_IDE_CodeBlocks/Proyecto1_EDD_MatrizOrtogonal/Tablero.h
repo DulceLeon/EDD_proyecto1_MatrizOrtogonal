@@ -1,3 +1,4 @@
+
 #ifndef TABLERO_H
 #define TABLERO_H
 
@@ -8,16 +9,16 @@
 
 using namespace std;//no me recuerdo si debo incluirlo en ambos archivos [cabecera y def de la clase...]
 class Tablero{
-    private:            
+    private:
         MatrizOrtogonal<string>* matriz;
         string symbBlank;
         NodoOrtogonal<string>* espacioVacio;
         string movimientosPosibles[6];//el tamaño de los arreglos si es nec colocarlo en el .h en caso de tener archivos separados...
-    
+
     public:
         Tablero();//cnstrct por defecto
         Tablero(int, int, int);//ancho, alto, #niveles
-        void agregarElementos(string);        
+        void agregarElementos(string);
         void setEspacioVacio(void);
         void resetEspacioVacio(NodoOrtogonal<string>*);
         int getLevels(void);
@@ -26,7 +27,8 @@ class Tablero{
         string getSymbBlank();
         string* getMovimientosPosibles(void);//si mal no recuedo, para devolver un arreglo, debe devolverse un puntero...
         MatrizOrtogonal<string>* getMatrizOrtogonal(void);
-        NodoOrtogonal<string>* getNodoVacio(void);
+        NodoOrtogonal<string>** getNodoVacio(void);
+        NodoOrtogonal<string>* getElNodoVacio(void);
 
         ~Tablero();
 };

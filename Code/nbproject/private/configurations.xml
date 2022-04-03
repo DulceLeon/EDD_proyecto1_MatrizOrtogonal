@@ -4,6 +4,8 @@
     <df root="." name="0">
       <df name=".vscode">
       </df>
+      <in>Comparador.cpp</in>
+      <in>Comparador.h</in>
       <in>Main.cpp</in>
       <in>ManejadorJuegoDel15.cpp</in>
       <in>ManejadorJuegoDel15.h</in>
