@@ -18,6 +18,8 @@ void Tablero::resetEspacioVacio(NodoOrtogonal<string>* nuevoEspacioVacio){
     espacioVacio = nuevoEspacioVacio;//pues por defecto se tendrá eso..
 }
 
+/*OJO: Este método es para obtener el espacio vacío y así poder comenzar a jugar
+  no es para addlo a la matriz de forma visual... creo que debí colocarle otro nombre :v xD*/
 void Tablero::setEspacioVacio(void){
     cout<<"ultimo nodo "<<this->matriz->getUltimoNodo();
     espacioVacio = this->matriz->getUltimoNodo();//pues por defecto se tendrá eso..

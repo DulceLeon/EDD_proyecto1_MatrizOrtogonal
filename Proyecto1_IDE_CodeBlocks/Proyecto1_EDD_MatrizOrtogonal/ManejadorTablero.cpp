@@ -4,6 +4,7 @@ using namespace std;
 
 ManejadorTablero::ManejadorTablero(){
     this->tableroOriginal = new Tablero();
+    this->manejadorCargaDatos = new ManejadorCargaDatos();
 }
 
 char ManejadorTablero::crearTableroManual(Tablero** tablero){
@@ -81,6 +82,14 @@ char ManejadorTablero::solicitarDatos(Tablero** tablero){
     this->tableroOriginal = (*tablero);
     return '0';//puesto que no se tiene una axn diferente cuando se retorna este 0, lo que pasará es que se iniciará la siguiente fase [jugar xD]...
 }//nice
+
+bool ManejadorTablero::cargarTablero(Tablero** tablero){
+    return (this->manejadorCargaDatos->cargarDatos(tablero));
+}
+
+/*Tablero* ManejadorTablero::getTableroCargado(){
+    return (this->manejadorCargaDatos->getTableroCargado());
+}*/
 
 char ManejadorTablero::confirmarAccion(char opcion){
     string mensaje = "De verdad deseas ";

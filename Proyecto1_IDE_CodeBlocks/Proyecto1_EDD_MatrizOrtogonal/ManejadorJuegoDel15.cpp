@@ -20,10 +20,10 @@ void ManejadorJuegoDel15::iniciarJuego(){
             opcion = this->crearTableroManual();//es decir que de estos casos de creación, no se saldrá hasta que se termine el juego, se reinicie o resuleva el tablero xD xD
             break;
         case '2':
-           // opcion = this->crearTableroAletorio();
+            opcion = this->cargarTablero();
             break;
         case '3':
-            //opcion = this->cargarTablero();
+            // opcion = this->crearTableroAletorio();
             break;
         case '4':
             //opcion = this->verHistorial();
@@ -73,9 +73,15 @@ char ManejadorJuegoDel15::crearTableroManual(){
 
 }*/
 
-/*char ManejadorJuegoDel15::cargarTablero(){
-
-}*/
+char ManejadorJuegoDel15::cargarTablero(){
+    if(this->manejadorTablero->cargarTablero(&(tablero))){
+        /*this->tablero = this->manejadorTablero->getTableroCargado();*/
+          // this->manejadorOrdenamiento->ordenarMatriz(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal(), tablero->getSymbBlank());//sino pues con el tablero original y si ninguna no, entonces que se envíe el valor... creo que eso hacía antes al enviar tablero para crearlo manualmente...
+        cout<<endl<<"Es hora de jugar :)";
+        return jugar();
+    }
+    return '7';
+}
 
 char ManejadorJuegoDel15::jugar(){
     char opcion = '$';

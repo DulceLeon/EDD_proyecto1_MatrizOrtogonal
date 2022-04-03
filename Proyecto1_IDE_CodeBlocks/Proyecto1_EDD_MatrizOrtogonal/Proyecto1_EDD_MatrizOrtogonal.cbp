@@ -34,6 +34,9 @@
 		</Compiler>
 		<Unit filename="Comparador.cpp" />
 		<Unit filename="Comparador.h" />
+		<Unit filename="ManejadorCargaDatos" />
+		<Unit filename="ManejadorCargaDatos.cpp" />
+		<Unit filename="ManejadorCargaDatos.h" />
 		<Unit filename="ManejadorJuegoDel15.cpp" />
 		<Unit filename="ManejadorJuegoDel15.h" />
 		<Unit filename="ManejadorOrdenamiento.cpp" />
