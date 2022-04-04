@@ -94,7 +94,7 @@
 	<string>
 	"ManejadorJuegoDel15.h"
 
-1649025483 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorJuegoDel15.h
+1649039645 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorJuegoDel15.h
 	<cstdlib>
 	<iostream>
 	<string>
@@ -108,7 +108,7 @@
 	<string>
 	"MatrizOrtogonal.cpp"
 
-1648970437 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/MatrizOrtogonal.cpp
+1649037985 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/MatrizOrtogonal.cpp
 	<cstdlib>
 	<iostream>
 	<string>
@@ -124,7 +124,7 @@
 	<iostream>
 	"NodoOrtogonal.cpp"
 
-1649025581 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorTablero.h
+1649039744 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorTablero.h
 	<cstdlib>
 	<iostream>
 	<cstring>
@@ -138,13 +138,13 @@
 	<string>
 	"MatrizOrtogonal.cpp"
 
-1649025702 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorJuegoDel15.cpp
+1649039664 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorJuegoDel15.cpp
 	"ManejadorJuegoDel15.h"
 
 1648967169 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorOrdenamiento.cpp
 	"ManejadorOrdenamiento.h"
 
-1648970437 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/MatrizOrtogonal.cpp
+1649037985 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/MatrizOrtogonal.cpp
 	<cstdlib>
 	<iostream>
 	<string>
@@ -180,7 +180,7 @@
 	<string>
 	<fstream>
 
-1649025961 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorTablero.cpp
+1649033083 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorTablero.cpp
 	"ManejadorTablero.h"
 
 1649025454 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorCargaDatos.cpp

@@ -16,14 +16,8 @@ void ManejadorJuegoDel15::iniciarJuego(){
         case '0':
             opcion = this->mostrarHome();
             break;
-        case '1':
-            opcion = this->crearTableroManual();//es decir que de estos casos de creación, no se saldrá hasta que se termine el juego, se reinicie o resuleva el tablero xD xD
-            break;
-        case '2':
-            opcion = this->cargarTablero();
-            break;
-        case '3':
-            opcion = this->crearTableroAleatorio();
+        case '1': case '2': case '3':
+            opcion = this->crearElTablero(opcion);
             break;
         case '4':
             //opcion = this->verHistorial();
@@ -59,28 +53,12 @@ char ManejadorJuegoDel15::mostrarHome(){
     return opcion;
 }
 
-char ManejadorJuegoDel15::crearTableroManual(){
-    if( (this->manejadorTablero->crearTableroManual(&(tablero))) == '7'){
+char ManejadorJuegoDel15::crearElTablero(char tipoCreacion){
+    if(this->manejadorTablero->crearTablero((&(tablero)), tipoCreacion) == '7'){
         return '7';
     }
-    cout<<endl<<"Es hora de jugar :)";
 
-   // this->manejadorOrdenamiento->ordenarMatriz(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal(), tablero->getSymbBlank());//sino pues con el tablero original y si ninguna no, entonces que se envíe el valor... creo que eso hacía antes al enviar tablero para crearlo manualmente...
-    return jugar();//puesto que es el ultimo paso, el valor a retornar, debe ser el de éste método xD
-}
-
-char ManejadorJuegoDel15::cargarTablero(){
-    if(this->manejadorTablero->cargarTablero(&(tablero))){
-        // this->manejadorOrdenamiento->ordenarMatriz(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal(), tablero->getSymbBlank());//sino pues con el tablero original y si ninguna no, entonces que se envíe el valor... creo que eso hacía antes al enviar tablero para crearlo manualmente...
-        cout<<endl<<"Es hora de jugar :)";
-        return jugar();
-    }
-    return '7';
-}
-
-char ManejadorJuegoDel15::crearTableroAleatorio(){
-    this->manejadorTablero->crearTableroAleatorio(&(tablero));
-    // this->manejadorOrdenamiento->ordenarMatriz(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal(), tablero->getSymbBlank());//sino pues con el tablero original y si ninguna no, entonces que se envíe el valor... creo que eso hacía antes al enviar tablero para crearlo manualmente...
+     // this->manejadorOrdenamiento->ordenarMatriz(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal(), tablero->getSymbBlank());//sino pues con el tablero original y si ninguna no, entonces que se envíe el valor... creo que eso hacía antes al enviar tablero para crearlo manualmente...
     cout<<endl<<"Es hora de jugar :)";
     return jugar();
 }
@@ -148,7 +126,9 @@ char ManejadorJuegoDel15::verDetalle(){
 }*/
 
 void ManejadorJuegoDel15::reiniciar(){
-    this->tablero = this->manejadorTablero->getTableroOriginal();
+    //this->tablero = this->manejadorTablero->getTableroOriginal();
+    this->tablero->getMatrizOrtogonal()->copyMatrix(this->manejadorTablero->getTableroOriginal()->getMatrizOrtogonal());//debe ser la copia, sino todos los punterios y ref que contenía ya no serían válidas y con eso habría un error[NullPointer] o incongruencia
+    this->tablero->setEspacioVacio();//puesto que por defecto se add siempre en el último espacio y como se reseteó entonces hay que volver a "localizarlo"
 }
 
 ManejadorJuegoDel15::~ManejadorJuegoDel15(){

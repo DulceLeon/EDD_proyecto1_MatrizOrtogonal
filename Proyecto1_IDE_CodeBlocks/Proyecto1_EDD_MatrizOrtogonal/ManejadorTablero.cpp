@@ -8,11 +8,32 @@ ManejadorTablero::ManejadorTablero(){
     this->herramientas = new Herramientas();
 }
 
+char ManejadorTablero::crearTablero(Tablero **tablero, char tipoCreacion){
+    char resultado = '0';
+
+    switch(tipoCreacion){
+        case '1':
+            resultado = crearTableroManual(tablero);
+        break;
+        case '2':
+            resultado = cargarTablero(tablero);
+        break;
+        case '3':
+             crearTableroAleatorio(tablero);//este es void, puesto que nunca habrá lugar de errores en este xD
+        break;
+    }
+
+    this->tableroOriginal = new Tablero((*tablero)->getWidth(), (*tablero)->getHeight(), (*tablero)->getLevels());
+    this->tableroOriginal->getMatrizOrtogonal()->copyMatrix(((*tablero)->getMatrizOrtogonal()));
+
+    return resultado;//aunque en realidad nunca llegará aquí, puesto que yo soy quien envía los tipos, por lo tanto no hay posibilidad que se especifique uno incorrecto...
+}
+
 char ManejadorTablero::crearTableroManual(Tablero** tablero){
     //char *nombreJugador = new char[25];
     string niveles, ancho, alto;
 
-    cout<<"\t\t\t\t::::CREACIÓN DE TABLERO::::\n";
+    cout<<"\t\t\t\t::::CREACION DE TABLERO::::\n";
     cout<<"\n1. Ingresa tu nombre: ";
     cin.get();
     getline(cin, jugador);
@@ -80,12 +101,20 @@ char ManejadorTablero::solicitarDatos(Tablero** tablero){
     }
 
     (*tablero)->agregarElementos(((*tablero)->getSymbBlank()));//se setea el símbolo que representa el espacio vacío
-    this->tableroOriginal = (*tablero);
+
+    //se crea el tablero original
+    /*this->tableroOriginal = new Tablero((*tablero)->getWidth(), (*tablero)->getHeight(), (*tablero)->getLevels());
+    this->tableroOriginal->getMatrizOrtogonal()->copyMatrix(((*tablero)->getMatrizOrtogonal()));*/
+
+    //this->tableroOriginal = (*tablero);
     return '0';//puesto que no se tiene una axn diferente cuando se retorna este 0, lo que pasará es que se iniciará la siguiente fase [jugar xD]...
 }//nice
 
-bool ManejadorTablero::cargarTablero(Tablero** tablero){
-    return (this->manejadorCargaDatos->cargarDatos(tablero, &jugador));
+char ManejadorTablero::cargarTablero(Tablero** tablero){
+    if((this->manejadorCargaDatos->cargarDatos(tablero, &jugador))){
+        return '0';
+    }
+    return '7';
 }
 
 void ManejadorTablero::crearTableroAleatorio(Tablero** tablero){//no tendría por qué devolver algo, puesto que es un proceso automático y no deberían haber fallos técnicos [es decir no provocados por el usuario]
@@ -114,7 +143,12 @@ void ManejadorTablero::crearTableroAleatorio(Tablero** tablero){//no tendría po
     }while(datosAgregados < ((ancho*alto*niveles)-1));
 
     (*tablero)->agregarElementos(((*tablero)->getSymbBlank()));
+
+   /* this->tableroOriginal = new Tablero((*tablero)->getWidth(), (*tablero)->getHeight(), (*tablero)->getLevels());
+    this->tableroOriginal->getMatrizOrtogonal()->copyMatrix(((*tablero)->getMatrizOrtogonal()));*/
+
     (*tablero)->getMatrizOrtogonal()->mostrarDatos();
+
     cout<<endl<<"\n\nsolo hace falta que ingreses tu nombre, justo aqui xD: ";
     cin.get();
     getline(cin, (this->jugador));

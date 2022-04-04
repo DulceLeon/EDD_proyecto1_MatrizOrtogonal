@@ -35,6 +35,7 @@ class MatrizOrtogonal{
         NodoOrtogonal<T>* buscarNodo(T);
         NodoOrtogonal<T>* shift(NodoOrtogonal<T>*, int);//nodo con contenido X [por el contexto del juego], string-> tipo pteo: izq, der, arr, aba, sal, ent
         void mostrarDatos();
+        void copyMatrix(MatrizOrtogonal<T>*);
         void clean();
 
         int getAncho();
@@ -275,26 +276,32 @@ class MatrizOrtogonal{
         switch (ubicacionSustituto){
             case 0://izq: x1
                 this->resetPrimerNodo(nodoFoco,((nodoFoco)->getAnterior()));
+                this->resetUltimoNodo(nodoFoco,((nodoFoco)->getAnterior()));
                 this->shiftOrtogonal->shiftNodes((nodoFoco), ((nodoFoco)->getAnterior()), ubicacionSustituto);
             break;
             case 1://Der: x2
                 this->resetPrimerNodo(nodoFoco,((nodoFoco)->getSiguiente()));
+                this->resetUltimoNodo(nodoFoco,((nodoFoco)->getSiguiente()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getSiguiente(), ubicacionSustituto);
             break;
             case 2://haz los equivalentes xD, luego haz el método de búsuqeda, pero antes revisa si está bien esto, apurébalo y si puedes simplificarlo, hazlo, después de eso tendrías que hacer los métodos del tablero, para los diferentes tipos de entrada de datos [aletorio, pasas todo a string y cuando sea 0 lo vuelves x, por entrada user, especificarás que el cout recibirá strings e idnicarás que el signo de vacío es una x, y el otro recibirás puros strings, ya tienes el signo de vacío, después de eso debes exe le método para buscar el vacío [con T busqueda = "X", ojo que puse comillas xD, luego creas la matriz, muestras los datos, y con eso pasas a imple el algoritmo para... ah no ese ya lo tengo iba a decir el shift xD, entonces lo pruebas, luego ves lo demás y al terminar todo lo codificable miras lo del algoritmo de resolución a base de lo que te responda el inge...]]
                 this->resetPrimerNodo(nodoFoco,((nodoFoco)->getArriba()));
+                this->resetUltimoNodo(nodoFoco,((nodoFoco)->getArriba()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getArriba(), ubicacionSustituto);
             break;
             case 3://abajo: y2
                 this->resetPrimerNodo(nodoFoco,((nodoFoco)->getAbajo()));
+                this->resetUltimoNodo(nodoFoco,((nodoFoco)->getAbajo()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getAbajo(), ubicacionSustituto);
             break;
             case 4://saliente: z1
                 this->resetPrimerNodo(nodoFoco,((nodoFoco)->getSaliente()));
+                this->resetUltimoNodo(nodoFoco,((nodoFoco)->getSaliente()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getSaliente(), ubicacionSustituto);
             break;
             case 5://entrante: z2
                 this->resetPrimerNodo(nodoFoco,((nodoFoco)->getEntrante()));
+                this->resetUltimoNodo(nodoFoco,((nodoFoco)->getEntrante()));
                 this->shiftOrtogonal->shiftNodes(nodoFoco, (nodoFoco)->getEntrante(), ubicacionSustituto);
             break;
             default://aunque en realidad de no ingresar un dato correcto el usuario, se solicitará que ingrese de nuevo xD, así que no hay pena xD
@@ -338,6 +345,37 @@ class MatrizOrtogonal{
             cout<<".......";
         }
         cout<<"\n";
+    }
+
+    template <class T>//este método se debe utilizar después de haber creado la matriz, puesto que aquí solo se copiarán los valores...
+    void MatrizOrtogonal<T>::copyMatrix(MatrizOrtogonal *matrizBase){
+        NodoOrtogonal<T> *layer_base = matrizBase->getPrimerNodo();//este nodo se utilizará para accedere a todo de la capa
+        NodoOrtogonal<T> *row_base, *node_base;//con este se accederá a las filas
+
+        NodoOrtogonal<T> *layer = primerNodo;//este nodo se utilizará para accedere a todo de la capa
+        NodoOrtogonal<T> *row, *node;//con este se accederá a las filas
+
+        do{
+            node_base = row_base = layer_base;//row = layer; node = row;
+            node = row = layer;
+            do{//para recorrer cada fila
+                do{
+                    node->setContenido(node_base->getContenido());
+
+                    node_base = node_base->getSiguiente();
+                    node = node->getSiguiente();
+                }while(node!=NULL);//podríamos colocar que se detenga cuando siguiente sea == NULL, así al salir se podrá imprimir la útlima fila con | al ini y al final xD
+
+                row_base = row_base->getAbajo();
+                node_base = row_base;
+
+                row = row->getAbajo();
+                node = row;
+            }while(row_base!=NULL);//con revisar uno basta por el hecho de tener =# de elementos
+
+            layer_base = layer_base->getEntrante();//[v]
+            layer = layer->getEntrante();//[v]
+        }while(layer_base!= NULL);
     }
 
     template <class T>
@@ -391,8 +429,8 @@ class MatrizOrtogonal{
 
     template <class T>
     bool MatrizOrtogonal<T>::resetLastNode(NodoOrtogonal<T>* posibleOldLast, NodoOrtogonal<T>* posibleNewLast){
-        if(posibleOldLast == primerNodo){
-            primerNodo = posibleNewLast;//hago esto específicamente por el shift
+        if(posibleOldLast == ultimoNodo){
+            ultimoNodo = posibleNewLast;//hago esto específicamente por el shift
             return true;
         }
         return false;

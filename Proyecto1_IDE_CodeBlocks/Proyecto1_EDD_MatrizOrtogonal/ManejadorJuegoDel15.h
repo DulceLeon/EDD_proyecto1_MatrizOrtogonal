@@ -25,6 +25,7 @@ class ManejadorJuegoDel15{
         //si vas a implementar el objeto que solucione automáticamente, entonces tb la instancia de él xD
 
         char mostrarHome();//op: 0
+        char crearElTablero(char);
         char crearTableroManual();//op: 1
         char cargarTablero();
         char crearTableroAleatorio();

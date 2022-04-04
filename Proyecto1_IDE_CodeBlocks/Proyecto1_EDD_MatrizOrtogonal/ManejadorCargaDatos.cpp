@@ -18,13 +18,13 @@ bool ManejadorCargaDatos::cargarDatos(Tablero** tablero, string *nombreJugador){
     cout<<"La carga de datos está por empezar, pero antes de ello\n";
     cout<<"verifica si tu archivo cumple con la siguiente sintaxis\n\n";
 
-    cout<<"1er línea: <niveles> , <ancho> , <alto>\n";
-    cout<<"2da línea: <n_datos>     [donde n = ancho]\n";
-    cout<<"#líneas totales = alto*niveles\n";
+    cout<<"1er linea: <niveles> , <ancho> , <alto>\n";
+    cout<<"2da linea: <n_datos>     [donde n = ancho]\n";
+    cout<<"#lineas totales = alto*niveles\n";
     cout<<"#datos totales = ancho*alto*niveles -1\n";
-    cout<<"[esto último porque el vacío ocupará la celda restante]";
+    cout<<"[esto ultimo porque el vacio ocupara la celda restante]";
     cout<<"\n\nTu archivo cumple con los requisitos? [S/N]";
-    cout<<"\nSi no es así mejor no continúes :)\n\n";
+    cout<<"\nSi no es asi mejor no continues :)\n\n";
     cin>>decision;
 
     if(decision == 'S' || decision == 's'){
@@ -70,6 +70,9 @@ bool ManejadorCargaDatos::cargarDatos(Tablero** tablero, string *nombreJugador){
         }
 
         (*tablero)->agregarElementos(((*tablero)->getSymbBlank()));
+
+       /* this->tableroOriginal = new Tablero((*tablero)->getWidth(), (*tablero)->getHeight(), (*tablero)->getLevels());
+        this->tableroOriginal->getMatrizOrtogonal()->copyMatrix(((*tablero)->getMatrizOrtogonal()));*/
         return true;
     }
     return false;
