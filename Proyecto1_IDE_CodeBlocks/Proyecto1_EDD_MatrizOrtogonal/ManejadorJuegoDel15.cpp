@@ -6,6 +6,7 @@ ManejadorJuegoDel15::ManejadorJuegoDel15(void){
     this->manejadorOrdenamiento = new ManejadorOrdenamiento();
     this->manejadorTablero = new ManejadorTablero();
     this->tablero = new Tablero();
+    this->manejadorTiempo = new ManejadorTiempo();
 }//aunque el compilador genere el constructor por defecto, si vas a implementarlo, entonces deberás declararlo en el .h
 
 void ManejadorJuegoDel15::iniciarJuego(){
@@ -74,6 +75,9 @@ char ManejadorJuegoDel15::jugar(){
   //  cout<<"instancia matriz-tablero: "<<tablero->getMatrizOrtogonal();
     this->tablero->setEspacioVacio();//puesto que por defecto se add siempre en el último que se haya creado...
 
+    this->manejadorTiempo->setTiempoInicial();
+    this->pasosEmpleados = 0;
+
     cout<<"\nPor favor ingresa el número correspondiente al tipo de movimiento a realizar :)\n";
     cout<<"[presiona ENTER para continuar]\n";
     cin.get();//eqq de system("pause");
@@ -81,6 +85,8 @@ char ManejadorJuegoDel15::jugar(){
 
     while(!juegoGanado && (opcion != 'T')){//no dejé una comp con el new, puesto que creo que al hacer eso lo que estaría comparando es si las posiciones en memo son iguales...
         if(opcion != '$'){
+            this->pasosEmpleados++;
+
             string posicion(1,opcion);//esto lo hiciste para que tome el número literal y no la rep ASCII que daría si usas directamente la var opción...
           //  cout<<"Manejador15 "<<tablero->getNodoVacio();
           //  cout<<" contenido? "<<*(tablero->getNodoVacio())<<endl;
@@ -114,25 +120,33 @@ char ManejadorJuegoDel15::jugar(){
         }
     }
 
-    if(juegoGanado){
-        cout<<"\n\n***HAS GANADO EL JUEGO UWU\n";
-        cin.get();
-        cin.get();
-    }
-
-    if(opcion == 'T'){
-        cout<<"\n\n**SOLUCION**\n";
-        this->manejadorOrdenamiento->getMatrizOrdenada()->mostrarDatos();
-        cin.get();
-        cin.get();
-    }
- //   this->mostrarResumen(((*opcion == 'T')?true:false));
+    this->manejadorTiempo->setTiempoFinal();
+    this->mostrarResumen(((opcion == 'T')?true:false));
     return '0';//para así mostrar el home en cualquiera de los 2 casos...
 }
 
-/*void ManejadorJuegoDel15::mostrarResumen(bool termandoALaFuerza){//esto se completa con el manejador de resultados, para este punto ya se ha registrado los datos en el archivo y se ha ordenado el arreglo
+void ManejadorJuegoDel15::mostrarResumen(bool terminadoALaFuerza){//esto se completa con el manejador de resultados, para este punto ya se ha registrado los datos en el archivo y se ha ordenado el arreglo
+    system("clear");
+
+    if(!terminadoALaFuerza){//es decir juego ganado
+        cout<<"\n\n\t\t\t***"<<this->manejadorTablero->getNombreJugador()<<" HAS GANADO EL JUEGO UWU\n";
+
+        cout<<"\n\n> Punteo total: "<<((this->tablero->getMatrizOrtogonal()->getAlto())*(this->tablero->getMatrizOrtogonal()->getAncho())*(this->tablero->getMatrizOrtogonal()->getNumeroNiveles()))*2<<endl;
+    }else{
+        cout<<"\n\n\t\t\t   ***SOLUCION***\n";
+        this->manejadorOrdenamiento->getMatrizOrdenada()->mostrarDatos();
+
+        cout<<"\n\n> Punteo total: "<<((this->tablero->getMatrizOrtogonal()->getAlto())*(this->tablero->getMatrizOrtogonal()->getAncho())*(this->tablero->getMatrizOrtogonal()->getNumeroNiveles()))*2<<endl;
+    }
+    cout<<"> #pasos realizados: "<<this->pasosEmpleados<<endl;
+    printf("> Hora de inicio: %s", this->manejadorTiempo->getTiempoInicial());
+    printf("\n> Hora de finalizacion: %s", this->manejadorTiempo->getTiempoFinal());
+    cout<<"\n> Tiempo empleado: "<<this->manejadorTiempo->getIntervaloTiempo()<<endl;
+    cin.get();
+    cin.get();
+
     //se invoca al método para calcular el total: si terminó a la fuerza, si opcion == T, hará la búsqueda del total, sino hará una simple multiplicación... por eso para saber que hacer recibirá un argu indicando si fue a la fuerza [true] o no [false]
-}*/
+}
 
 /*char ManejadorJuegoDel15::verHistorial(){
 

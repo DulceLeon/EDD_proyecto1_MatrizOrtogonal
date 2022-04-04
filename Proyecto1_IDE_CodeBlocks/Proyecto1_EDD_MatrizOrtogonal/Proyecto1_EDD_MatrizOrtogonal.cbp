@@ -48,6 +48,8 @@
 		<Unit filename="ManejadorResultados.h" />
 		<Unit filename="ManejadorTablero.cpp" />
 		<Unit filename="ManejadorTablero.h" />
+		<Unit filename="ManejadorTiempo.cpp" />
+		<Unit filename="ManejadorTiempo.h" />
 		<Unit filename="MatrizOrtogonal.cpp" />
 		<Unit filename="NodoOrtogonal.cpp" />
 		<Unit filename="ShiftOrtogonal.cpp" />

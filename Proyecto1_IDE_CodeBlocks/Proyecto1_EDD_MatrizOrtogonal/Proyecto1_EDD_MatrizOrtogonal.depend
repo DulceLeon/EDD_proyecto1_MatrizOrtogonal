@@ -94,12 +94,15 @@
 	<string>
 	"ManejadorJuegoDel15.h"
 
-1649040622 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorJuegoDel15.h
+1649112577 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorJuegoDel15.h
 	<cstdlib>
 	<iostream>
 	<string>
 	"Tablero.h"
 	"ManejadorTablero.h"
+	<chrono>
+	<ctime>
+	"ManejadorTiempo.h"
 	"ManejadorOrdenamiento.h"
 
 1648959639 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/Tablero.h
@@ -138,7 +141,7 @@
 	<string>
 	"MatrizOrtogonal.cpp"
 
-1649042601 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorJuegoDel15.cpp
+1649114856 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorJuegoDel15.cpp
 	"ManejadorJuegoDel15.h"
 
 1649045987 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorOrdenamiento.cpp
@@ -193,4 +196,12 @@
 	<cstdlib>
 	<iostream>
 	<string>
+
+1649114613 /home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorTiempo.h
+	<stdio.h>
+	<string>
+	<time.h>
+
+1649114925 source:/home/phily/Documentos/CarpetaDeEstudios/2022/1erSemestre-2022/EDD/Lab/Proyectos/Proyecto1/EDD_proyecto1_MatrizOrtogonal/Proyecto1_IDE_CodeBlocks/Proyecto1_EDD_MatrizOrtogonal/ManejadorTiempo.cpp
+	"ManejadorTiempo.h"
 
